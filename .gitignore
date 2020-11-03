@@ -1,0 +1,6 @@
+node_modules/
+dist/
+lojas/
+errors.log
+ok.log
+package-lock.json

@@ -1,0 +1,35 @@
+{
+  "name": "conecsync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/child-process-promise": "^2.2.1",
+    "@types/lodash": "^4.14.163",
+    "@types/moment": "^2.13.0",
+    "@types/nedb": "^1.8.11",
+    "@types/node": "^14.0.26",
+    "@types/request-promise": "^4.1.46",
+    "@types/yargs": "^15.0.9",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "child-process-promise": "^2.2.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "mysql2": "^2.2.5",
+    "nedb": "^1.8.0",
+    "object-hash": "^2.0.3",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "sequelize": "^6.3.5",
+    "yargs": "^16.1.0"
+  }
+}
