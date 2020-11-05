@@ -71,8 +71,6 @@ export async function buscaProdutosDB(
   sequelize,
   idLoja: string
 ) {
-  const ORIGEM_PRODUTOS: string = get(CONFIG_PRODUTOS, 'nomeOrigem') || '';
-
   if (sequelize) {
     try {
       log('Buscando produtos do DB.');
@@ -84,7 +82,7 @@ export async function buscaProdutosDB(
           timestamps: false,
           sequelize,
           modelName: 'Produto',
-          tableName: ORIGEM_PRODUTOS,
+          tableName: get(CONFIG_PRODUTOS, 'nomeView') || ''
         }
       );
 
@@ -228,37 +226,55 @@ function findOne(
   produto: any
 ): Promise<number> {
   return new Promise((resolve, reject) => {
+    // console.log(produto);
     const ID_PRODUTO: string = get(produto, 'idProduto') || '';
     // console.log(ID_PRODUTO);
     const ESTOQUE = {
       controlado: !!get(produto, 'estoqueControlado'),
-      min: parseFloat(get(produto, 'qtdeEstoqueMinimo') || 0),
-      atual: parseFloat(get(produto, 'qtdeEstoqueAtual') || 0)
+      min: parseFloat(get(produto, 'qtdeEstoqueMinimo')) || 0,
+      atual: parseFloat(get(produto, 'qtdeEstoqueAtual')) || 0
     };
-    const ESTOQUE_MINIMO: boolean = ESTOQUE.controlado && ESTOQUE.min
-      ? ESTOQUE.atual <= ESTOQUE.min
-      : false;
+    const LIMITE_VENDA = {
+      percentual: parseFloat(get(produto, 'percentualLimiteVenda')) || 0,
+      qtde: parseFloat(get(produto, 'qtdeLimiteVenda')) || 0,
+      menorValor: 0
+    };
+    const VAL_PERCENTUAL: number = ESTOQUE.atual * (LIMITE_VENDA.percentual / 100);
+    LIMITE_VENDA.menorValor = LIMITE_VENDA.qtde > 0
+      ? (
+        VAL_PERCENTUAL > 0
+          ? (
+            VAL_PERCENTUAL < LIMITE_VENDA.qtde
+              ? VAL_PERCENTUAL
+              : LIMITE_VENDA.qtde
+          )
+          : LIMITE_VENDA.qtde
+      )
+      : VAL_PERCENTUAL;
     const BODY_PRODUTO = {
       "atacado": {
-        "qtde": parseFloat(get(produto, 'atacadoQtde') || 0),
-        "valor": parseFloat(get(produto, 'atacadoValor') || 0),
+        "qtde": parseFloat(get(produto, 'atacadoQtde')) || 0,
+        "valor": parseFloat(get(produto, 'atacadoValor')) || 0,
       },
       "ativo": !!get(produto, 'produtoAtivo', true),
       "barcode": get(produto, 'barcodeProduto') || '',
       "descricao": get(produto, 'descricaoProduto') || '',
-      "estoqueMinimo": ESTOQUE_MINIMO,
+      "estoqueMinimo": ESTOQUE.controlado && ESTOQUE.min
+        ? ESTOQUE.atual <= ESTOQUE.min
+        : false,
       "idDepartamento": get(produto, 'idDepartamento') || '',
       "idSubdepartamento": get(produto, 'idSubdepartamento') || '',
       "industrializado": !!get(produto, 'industrializado', true),
+      "limiteVenda": LIMITE_VENDA.menorValor,
       "pesavel": {
         "status": !!get(produto, 'pesavelStatus', false),
         "unidade": {
-          "fracao": parseFloat(get(produto, 'pesavelFracao') || 0),
+          "fracao": parseFloat(get(produto, 'pesavelFracao')) || 0,
           "tipo": get(produto, 'pesavelTipo') || ''
         }
       },
       "nome": get(produto, 'nomeProduto') || '',
-      "preco": parseFloat(get(produto, 'precoVenda') || 0),
+      "preco": parseFloat(get(produto, 'precoVenda')) || 0,
       "vitrine": !!get(produto, 'vitrine', false)
     };
     // console.log(BODY_PRODUTO);

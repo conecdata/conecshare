@@ -187,6 +187,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
               nomeDepartamento: -1,
               nomeProduto: -1,
               nomeSubdepartamento: -1,
+              percentualLimiteVenda: -1,
               pesavelFracao: -1,
               pesavelStatus: -1,
               pesavelTipo: -1,
@@ -194,6 +195,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
               produtoAtivo: -1,
               qtdeEstoqueAtual: -1,
               qtdeEstoqueMinimo: -1,
+              qtdeLimiteVenda: -1,
               vitrine: -1,
             };
             if (EXTENSION !== '.csv') {
@@ -326,6 +328,9 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       'pesavelStatus': FIELDPOS['pesavelStatus'] >= 0
                         && parseInt(ROW[FIELDPOS['pesavelStatus']] || '') > 0,
 
+                      'percentualLimiteVenda': FIELDPOS['percentualLimiteVenda'] >= 0
+                        && parseFloat(ROW[FIELDPOS['percentualLimiteVenda']] || ''),
+
                       'pesavelFracao': FIELDPOS['pesavelFracao'] >= 0
                         && parseFloat(ROW[FIELDPOS['pesavelFracao']] || ''),
 
@@ -343,6 +348,9 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
 
                       'qtdeEstoqueAtual': FIELDPOS['qtdeEstoqueAtual'] >= 0
                         && parseFloat(ROW[FIELDPOS['qtdeEstoqueAtual']] || ''),
+
+                      'qtdeLimiteVenda': FIELDPOS['qtdeLimiteVenda'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtdeLimiteVenda']] || ''),
 
                       'estoqueControlado': FIELDPOS['estoqueControlado'] >= 0
                         && parseInt(ROW[FIELDPOS['estoqueControlado']] || '') > 0,
