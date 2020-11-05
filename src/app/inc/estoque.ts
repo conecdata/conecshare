@@ -6,7 +6,7 @@ import {
 } from '../consts';
 import { CONFIG } from '../config/config';
 import { CONFIG_ESTOQUE } from '../config/origens/config-estoque';
-import { CONFIG_MERCADEIRO } from '../config/integracoes/config-mercadeiro';
+import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { get } from 'lodash';
 var Datastore = require('nedb');
 

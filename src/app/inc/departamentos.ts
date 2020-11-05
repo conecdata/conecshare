@@ -2,7 +2,7 @@ import * as rp from 'request-promise';
 import { errorLog, log } from './lib';
 import { get } from 'lodash';
 import { CONFIG } from '../config/config';
-import { CONFIG_MERCADEIRO } from '../config/integracoes/config-mercadeiro';
+import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { API_URL } from '../consts';
 var hash = require('object-hash');
 var Datastore = require('nedb');

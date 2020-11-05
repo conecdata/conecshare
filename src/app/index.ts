@@ -24,7 +24,7 @@ import {
 // config
 import { CONFIG } from './config/config';
 import { CONFIG_FORMAS } from './config/origens/config-formas-pgto';
-import { CONFIG_MERCADEIRO } from './config/integracoes/config-mercadeiro';
+import { CONFIG_MERCADEIRO } from './config/projetos/config-mercadeiro';
 import { CONFIG_PRODUTOS } from './config/origens/config-produtos';
 import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
 
@@ -37,7 +37,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
     const SEARCH_REG_EXP = /"/g;
 
     // const PATH: string = path.dirname(require.main.filename);
-    const INTEGRACOES = {
+    const PROJETOS = {
       mercadeiro: (get(CONFIG_MERCADEIRO, 'lojas') || []).length
     };
 
@@ -64,14 +64,14 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
       },
     };
 
-    log(`Verificando configurações de lojas em integrações: ${JSON.stringify(INTEGRACOES)}`);
+    log(`Verificando configurações de lojas em integrações: ${JSON.stringify(PROJETOS)}`);
     if (
-      !INTEGRACOES.mercadeiro
-      // && !INTEGRACOES.supermercadeiro
-      // && !INTEGRACOES.bairristas
-      // && !INTEGRACOES.pedeon
+      !PROJETOS.mercadeiro
+      // && !PROJETOS.supermercadeiro
+      // && !PROJETOS.bairristas
+      // && !PROJETOS.pedeon
     ) {
-      throw new Error('Nenhuma loja indicada em integrações: config/integracoes/config-*.ts');
+      throw new Error('Nenhuma loja indicada em projetos: config/projetos/config-*.ts');
     } // if
 
     log('Verificando configurações de pasta csv.');

@@ -9,7 +9,7 @@ import {
   get,
   uniqBy
 } from 'lodash';
-import { CONFIG_MERCADEIRO } from '../config/integracoes/config-mercadeiro';
+import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { CONFIG_FORMAS } from '../config/origens/config-formas-pgto';
 var hash = require('object-hash');
 var Datastore = require('nedb');

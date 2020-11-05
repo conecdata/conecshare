@@ -7,7 +7,7 @@ import {
   get,
   uniqBy
 } from 'lodash';
-import { CONFIG_MERCADEIRO } from '../config/integracoes/config-mercadeiro';
+import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { syncDepartamentos } from './departamentos';
 import { syncSubdepartamentos } from './subdepartamentos';
 var hash = require('object-hash');
