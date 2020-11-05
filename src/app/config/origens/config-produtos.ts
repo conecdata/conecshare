@@ -19,6 +19,8 @@ export const CONFIG_PRODUTOS = {
     pro_c_barcode AS barcodeProduto,
     pro_c_produto AS nomeProduto,
     pro_f_preco AS precoVenda,
+    30 AS percentualLimiteVenda,
+    0 AS qtdeLimiteVenda,
     pro_fk_grupo AS idDepartamento,
     gru_c_grupo AS nomeDepartamento,
     gru_b_ativo AS ativoDepartamento,

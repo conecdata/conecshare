@@ -16,6 +16,7 @@ export const PRODUTOS_REQ_FIELDS: string[] = [
   'nomeDepartamento', // STRING
   'nomeProduto', // STRING
   'nomeSubdepartamento', // STRING
+  'percentualLimiteVenda', // INTEGER/FLOAT
   'pesavelFracao', // FLOAT
   'pesavelStatus', // BOOLEAN
   'pesavelTipo', // STRING
@@ -23,6 +24,7 @@ export const PRODUTOS_REQ_FIELDS: string[] = [
   'produtoAtivo', // BOOLEAN
   'qtdeEstoqueAtual', // INTEGER/FLOAT
   'qtdeEstoqueMinimo', // INTEGER/FLOAT
+  'qtdeLimiteVenda', // INTEGER/FLOAT
   'vitrine', // BOOLEAN
 ];
 
@@ -124,7 +126,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.STRING,
     field: 'barcodeProduto'
   },
-
   idDepartamento: {
     type: DataTypes.STRING,
     field: 'idDepartamento'
@@ -137,7 +138,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.BOOLEAN,
     field: 'ativoDepartamento'
   },
-
   nomeProduto: {
     type: DataTypes.STRING,
     field: 'nomeProduto'
@@ -150,7 +150,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.BOOLEAN,
     field: 'produtoAtivo'
   },
-
   atacadoQtde: {
     type: DataTypes.INTEGER,
     field: 'atacadoQtde'
@@ -159,7 +158,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.DECIMAL,
     field: 'atacadoValor'
   },
-
   descricaoProduto: {
     type: DataTypes.STRING,
     field: 'descricaoProduto'
@@ -168,7 +166,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.BOOLEAN,
     field: 'industrializado'
   },
-
   idSubdepartamento: {
     type: DataTypes.STRING,
     field: 'idSubdepartamento'
@@ -181,7 +178,6 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.BOOLEAN,
     field: 'ativoSubdepartamento'
   },
-
   pesavelStatus: {
     type: DataTypes.BOOLEAN,
     field: 'pesavelStatus'
@@ -194,12 +190,10 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.STRING,
     field: 'pesavelTipo'
   },
-
   vitrine: {
     type: DataTypes.BOOLEAN,
     field: 'vitrine'
   },
-
   qtdeEstoqueMinimo: {
     type: DataTypes.DECIMAL,
     field: 'qtdeEstoqueMinimo'
@@ -207,5 +201,13 @@ export const CAMPOS_PRODUTOS: any = {
   qtdeEstoqueAtual: {
     type: DataTypes.DECIMAL,
     field: 'qtdeEstoqueAtual'
+  },
+  percentualLimiteVenda: {
+    type: DataTypes.DECIMAL,
+    field: 'percentualLimiteVenda'
+  },
+  qtdeLimiteVenda: {
+    type: DataTypes.DECIMAL,
+    field: 'qtdeLimiteVenda'
   },
 };
