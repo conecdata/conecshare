@@ -2,7 +2,7 @@ export const CONFIG = {
   db: {
     conexao: {
       host: 'localhost',
-      tabela: 'hypico',
+      tabela: 'modelo_conecdata',
       usuario: 'root',
       senha: 'masterkey',
       tipo: 'mysql', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
@@ -18,12 +18,14 @@ export const CONFIG = {
   csv: {
     path: 'D:\\conecdata\\produtos\\conecsync\\src\\assets'
   },
-  api: {
-    /* 
-      TRUE = plataforma de testes
-      FALSE = plataforma definitiva ( CUIDADO )
-    */
-    sandbox: true
-  },
+  /* 
+    TRUE = plataforma de testes
+    FALSE = plataforma definitiva ( CUIDADO )
+  */
+  sandbox: true,
+  /* 
+    TRUE = Envia mensagens para terminal (se disponível)
+    FALSE = Não envia mensagens, apenas grava em arquivos de log
+  */
   verbose: true
 }

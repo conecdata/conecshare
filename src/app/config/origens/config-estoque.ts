@@ -5,14 +5,14 @@ export const CONFIG_ESTOQUE = {
   tipo: '', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
-  nomeView: 'conecdata_estoque', // db
+  nomeView: 'view_conecdata_estoque', // db
 }
 
 /*
-  DROP VIEW conecdata_estoque;
+  DROP VIEW view_conecdata_estoque;
 
   CREATE VIEW
-    conecdata_estoque
+    view_conecdata_estoque
   AS SELECT
     pro_pk AS idProduto,
     pro_b_estoque AS estoqueControlado,
@@ -22,10 +22,7 @@ export const CONFIG_ESTOQUE = {
     pro_f_est_min AS qtdeEstoqueMinimo,
     pro_f_est_qtde_loja AS qtdeEstoqueAtual
   FROM
-    produtos_ok AS produtos
+    produtos
   WHERE
     pro_b_estoque > 0
-
-  LEFT JOIN
-    lojas ON produtos.pro_fk_loja = loja.loj_pk
 */

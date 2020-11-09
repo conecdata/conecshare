@@ -122,7 +122,7 @@ async function apiUpdateEstoque(
   idLoja: string
 ) {
   /* MERCADEIRO */
-  const URL_API: string = CONFIG.api.sandbox
+  const URL_API: string = CONFIG.sandbox
     ? API_URL.mercadeiro.sandbox
     : API_URL.mercadeiro.producao;
 
