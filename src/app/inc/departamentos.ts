@@ -29,7 +29,7 @@ export async function syncDepartamentos(
         for (let i = 0; i < departamentos.length; i++) {
             const BODY_DEPARTAMENTO = departamentos[i];
             const ID_DEPARTAMENTO: string = get(BODY_DEPARTAMENTO, '_id');
-
+            // console.log(BODY_DEPARTAMENTO);
             try {
                 count += await findOne(
                     NeDB_departamentos,

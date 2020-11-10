@@ -275,7 +275,7 @@ function findOne(
       },
       "nome": get(produto, 'nomeProduto') || '',
       "preco": parseFloat(get(produto, 'precoVenda')) || 0,
-      "vitrine": !!get(produto, 'vitrine', false)
+      "destaque": !!get(produto, 'destaque', false)
     };
     // console.log(BODY_PRODUTO);
     const HASH_PRODUTO: string = hash(BODY_PRODUTO);

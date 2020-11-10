@@ -2,14 +2,14 @@
 export const CONFIG_FORMAS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'csv', // 'db' | 'csv' | ''
+  tipo: 'db', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de formas pgto
   nomeView: 'view_conecdata_formas', // db
 }
 
 /*
-  DROP VIEW view_conecdata_formas;
+  DROP VIEW IF EXISTS view_conecdata_formas;
 
   CREATE VIEW
     view_conecdata_formas

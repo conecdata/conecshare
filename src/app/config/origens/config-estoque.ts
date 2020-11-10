@@ -9,7 +9,7 @@ export const CONFIG_ESTOQUE = {
 }
 
 /*
-  DROP VIEW view_conecdata_estoque;
+  DROP VIEW IF EXISTS view_conecdata_estoque;
 
   CREATE VIEW
     view_conecdata_estoque

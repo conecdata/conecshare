@@ -44,8 +44,6 @@ export async function buscaFormasDB(
   sequelize,
   idLoja: string
 ) {
-  const ORIGEM_FORMAS: string = get(CONFIG_FORMAS, 'nomeOrigem') || '';
-
   if (sequelize) {
     try {
       log('Buscando formas pgto do DB.');
@@ -57,7 +55,7 @@ export async function buscaFormasDB(
           timestamps: false,
           sequelize,
           modelName: 'Forma',
-          tableName: ORIGEM_FORMAS,
+          tableName: get(CONFIG_FORMAS, 'nomeView') || ''
         }
       );
 

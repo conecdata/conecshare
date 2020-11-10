@@ -196,7 +196,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
               qtdeEstoqueAtual: -1,
               qtdeEstoqueMinimo: -1,
               qtdeLimiteVenda: -1,
-              vitrine: -1,
+              destaque: -1,
             };
             if (EXTENSION !== '.csv') {
               errorLog('Formato inválido. Apenas arquivos .csv são aceitos: config/config.ts: csv.path/produtos/{idLoja}.csv');
@@ -340,8 +340,8 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       'descricaoProduto': FIELDPOS['descricaoProduto'] >= 0
                         && `${ROW[FIELDPOS['descricaoProduto']].trim()}`,
 
-                      'vitrine': FIELDPOS['vitrine'] >= 0
-                        && parseInt(ROW[FIELDPOS['vitrine']] || '') > 0,
+                      'destaque': FIELDPOS['destaque'] >= 0
+                        && parseInt(ROW[FIELDPOS['destaque']] || '') > 0,
 
                       'qtdeEstoqueMinimo': FIELDPOS['qtdeEstoqueMinimo'] >= 0
                         && parseFloat(ROW[FIELDPOS['qtdeEstoqueMinimo']] || ''),

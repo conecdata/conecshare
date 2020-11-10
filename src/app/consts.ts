@@ -25,7 +25,7 @@ export const PRODUTOS_REQ_FIELDS: string[] = [
   'qtdeEstoqueAtual', // INTEGER/FLOAT
   'qtdeEstoqueMinimo', // INTEGER/FLOAT
   'qtdeLimiteVenda', // INTEGER/FLOAT
-  'vitrine', // BOOLEAN
+  'destaque', // BOOLEAN
 ];
 
 export const FORMAS_REQ_FIELDS: string[] = [
@@ -190,9 +190,9 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.STRING,
     field: 'pesavelTipo'
   },
-  vitrine: {
+  destaque: {
     type: DataTypes.BOOLEAN,
-    field: 'vitrine'
+    field: 'destaque'
   },
   qtdeEstoqueMinimo: {
     type: DataTypes.DECIMAL,

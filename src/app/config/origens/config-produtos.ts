@@ -2,7 +2,7 @@
 export const CONFIG_PRODUTOS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'csv', // 'db' | 'csv' | ''
+  tipo: 'db', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
   nomeView: 'view_conecdata_produtos', // db
@@ -10,7 +10,7 @@ export const CONFIG_PRODUTOS = {
 
 // VERSÃO SIMPLIFICADA
 /*
-  DROP VIEW view_conecdata_produtos;
+  DROP VIEW IF EXISTS view_conecdata_produtos;
 
   CREATE VIEW
     view_conecdata_produtos
@@ -32,7 +32,7 @@ export const CONFIG_PRODUTOS = {
         
     0 AS estoqueControlado,
     0 AS qtdeEstoqueMinimo,
-    0 AS qtdeEstoqueAtual
+    0 AS qtdeEstoqueAtual,
     
     0 AS atacadoQtde,
     0 AS atacadoValor,
@@ -81,7 +81,7 @@ export const CONFIG_PRODUTOS = {
         
     pro_b_estoque AS estoqueControlado,
     pro_f_est_min AS qtdeEstoqueMinimo,
-    pro_f_est_qtde_loja AS qtdeEstoqueAtual
+    pro_f_est_qtde_loja AS qtdeEstoqueAtual,
     
     pro_f_qtde_atacado AS atacadoQtde,
     pro_f_valor_atacado AS atacadoValor,

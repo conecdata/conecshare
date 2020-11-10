@@ -16,6 +16,7 @@ CREATE TABLE produtos (
   pro_b_favorito tinyint(4) NOT NULL DEFAULT '0',
   pro_b_balanca tinyint(4) NOT NULL DEFAULT '0',
   pro_f_qtde_estoque_loja decimal(10,2) NOT NULL DEFAULT '0.00',
+  pro_f_qtde_estoque_loja decimal(10,2) NOT NULL DEFAULT '0.00',
   pro_f_qtde_estoque_min decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

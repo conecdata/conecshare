@@ -1,5 +1,4 @@
 export const CONFIG_MERCADEIRO = {
-  // _nomeIntegracao: 'mercadeiro', // NÃO MODIFICAR
   lojas: [
     /*
     Você deve indicar quantas lojas quiser sincronizar conforme o exemplo abaixo:
@@ -12,7 +11,7 @@ export const CONFIG_MERCADEIRO = {
     */
     {
       id: '1',
-      token: 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnNiMnBoVUdGMGFDSTZJbDkxWm5NdmJXY3ZiRzlqWVd4cFpHRmtaWE12ZFdKbGNtRmlZUzB0YldjdmJHOXFZWE12YzNWd1pYSXRjR1ZrWlc5dUxTMXRaeTB0ZFdKbGNtRmlZUzB0YldWeVkyVnpMUzFoYm5SdmJtbHZMV0p2Y21kbGN5MWhjbUYxYW04aUxDSm9ZWE5vSWpvaU1EWmlZakl3WldNaUxDSnBaRWx1ZEdWbmNtRmtiM0poSWpvaVkyOXVaV05rWVhSaElpd2lhV0YwSWpveE5qQTBOakExT1RnMGZRLk93VWFVUzdwNFYzTVNqbFluQmJsVlNQcVVXaWljS19kdE0yZDlsaFNUcDQ='
+      token: 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnNiMnBoVUdGMGFDSTZJaTlmZFdaekwyMW5MMnh2WTJGc2FXUmhaR1Z6TDNWaVpYSmhZbUV0TFcxbkwyeHZhbUZ6TDNOMWNHVnliV1Z5WTJGa2J5MXRiMlJsYkc4dExXMW5MUzExWW1WeVlXSmhMUzFqWlc1MGNtOHRMV1pwWkdWc2FYTXRjbVZwY3lJc0ltaGhjMmdpT2lJeE5tSmpNakJsWkNJc0ltbGtTVzUwWldkeVlXUnZjbUVpT2lKamIyNWxZMlJoZEdFaUxDSnBZWFFpT2pFMk1EUTFPVGM0T1RSOS5ObzJwbXNDVFpzSkdzTGI2QUN0Ylo2WDltQ3NzVUNhYUM1Yk9ZbngxMW5v'
     }
   ]
 }

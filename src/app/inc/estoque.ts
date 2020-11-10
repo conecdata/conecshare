@@ -40,8 +40,6 @@ export async function buscaEstoqueDB(
   sequelize,
   idLoja: string
 ) {
-  const ORIGEM_ESTOQUE: string = get(CONFIG_ESTOQUE, 'nomeOrigem') || '';
-
   if (sequelize) {
     try {
       log('Buscando estoques do DB.');
@@ -53,7 +51,7 @@ export async function buscaEstoqueDB(
           timestamps: false,
           sequelize,
           modelName: 'Estoque',
-          tableName: ORIGEM_ESTOQUE,
+          tableName: get(CONFIG_ESTOQUE, 'nomeView') || ''
         }
       );
 
