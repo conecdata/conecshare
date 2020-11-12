@@ -781,13 +781,13 @@ A [view](#glossario-view) de estoque é uma versão extremamente simplificada da
   CREATE VIEW
     view_conecdata_estoque
   AS SELECT
-    pro_pk AS idProduto,
-    pro_b_estoque AS estoqueControlado,
-    pro_c_barcode AS barcodeProduto,
-    pro_c_produto AS nomeProduto,
+    pro_pk AS id_produto,
+    pro_b_estoque AS estoque_controlado,
+    pro_c_barcode AS barcode_produto,
+    pro_c_produto AS nome_produto,
     '1' AS idLoja,
-    pro_f_qtde_estoque_min AS qtdeEstoqueMinimo,
-    pro_f_qtde_estoque_loja AS qtdeEstoqueAtual
+    pro_f_qtde_estoque_min AS qtde_estoque_minimo,
+    pro_f_qtde_estoque_loja AS qtde_estoque_atual
   FROM
     produtos
   WHERE
