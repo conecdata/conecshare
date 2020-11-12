@@ -345,11 +345,11 @@ A parte mais complexa da integração pelo **ConecSync** provavelmente será a g
   CREATE VIEW
     view_conecdata_formas
   AS SELECT
-    fpg_pk AS idInterno,
-    fpg_c_forma AS nomeForma,
-    fpg_c_id_externo AS idExterno,
-    '1' AS idLoja,
-    1 AS formaAtiva
+    fpg_pk AS id_interno,
+    fpg_c_forma AS nome_forma,
+    fpg_c_id_externo AS id_externo,
+    1 AS id_loja,
+    1 AS forma_ativa
   FROM
     formas_pgto
   WHERE
@@ -381,12 +381,12 @@ Três situações possíveis, ocorrerão na composição de suas views:
 Vamos verificar todos campos de nossa tabela de origem exemplo e todos apelidos listados na view para ver a correspondência entre eles.
 Campo|Apelido|Situação
 |:--|:--|:--|
-fpg_pk|idInterno|<font color='green'>ENCONTRADO</font>
-fpg_c_forma|nomeForma|<font color='green'>ENCONTRADO</font>
-fpg_c_id_externo|idExterno|<font color='green'>ENCONTRADO</font>
+fpg_pk|id_interno|<font color='green'>ENCONTRADO</font>
+fpg_c_forma|nome_forma|<font color='green'>ENCONTRADO</font>
+fpg_c_id_externo|id_externo|<font color='green'>ENCONTRADO</font>
 fpg_c_legenda|-|**NÃO UTILIZADO**
--|formaAtiva|<font color='tomato'> NÃO ENCONTRADO</font>
--|idLoja|<font color='tomato'> NÃO ENCONTRADO</font>
+-|forma_ativa|<font color='tomato'> NÃO ENCONTRADO</font>
+-|id_loja|<font color='tomato'> NÃO ENCONTRADO</font>
 
 ***Caso 1:*** Campos na tabela origem que correspondem a apelidos (situação <font color='green'>ENCONTRADO</font>)
 ```

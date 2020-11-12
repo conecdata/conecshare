@@ -14,11 +14,11 @@ export const CONFIG_FORMAS = {
   CREATE VIEW
     view_conecdata_formas
   AS SELECT
-    fpg_pk AS idInterno,
-    fpg_c_forma AS nomeForma,
-    fpg_c_id_externo AS idExterno,
-    '1' AS idLoja,
-    1 AS formaAtiva
+    fpg_pk AS id_interno,
+    fpg_c_forma AS nome_forma,
+    fpg_c_id_externo AS id_externo,
+    1 AS id_loja,
+    1 AS forma_ativa
   FROM
     formas_pgto
   WHERE

@@ -59,7 +59,7 @@ export async function buscaEstoqueDB(
       return Estoque.findAll(
         {
           where: {
-            idLoja: idLoja
+            id_loja: +idLoja
           }
         }
       );
@@ -97,7 +97,7 @@ export async function syncEstoque(
 
       const PRODUTO = estoque[i] || {};
       // console.log(PRODUTO);
-      const ID_PRODUTO: string = get(PRODUTO, 'idProduto') || '';
+      const ID_PRODUTO: string = get(PRODUTO, 'id_produto') || '';
 
       try {
         count += await findOne(
@@ -154,11 +154,11 @@ function findOne(
   produto: any
 ): Promise<number> {
   return new Promise((resolve, reject) => {
-    const ID_PRODUTO: string = get(produto, 'idProduto') || '';
+    const ID_PRODUTO: string = get(produto, 'id_produto') || '';
     // console.log(ID_PRODUTO);
     const ESTOQUE = {
-      min: parseFloat(get(produto, 'qtdeEstoqueMinimo') || 0),
-      atual: parseFloat(get(produto, 'qtdeEstoqueAtual') || 0)
+      min: parseFloat(get(produto, 'qtde_estoque_minimo') || 0),
+      atual: parseFloat(get(produto, 'qtde_estoque_atual') || 0)
     };
     const BODY = {
       "estoqueMinimo": ESTOQUE.min

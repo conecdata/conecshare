@@ -2,45 +2,45 @@ const { DataTypes } = require('sequelize');
 
 // CSVs
 export const PRODUTOS_REQ_FIELDS: string[] = [
-  'idProduto', // STRING
-  'idDepartamento', // STRING
-  'idSubdepartamento', // STRING
-  'atacadoQtde', // INTEGER
-  'atacadoValor', // INTEGER/FLOAT
-  'ativoDepartamento', // BOOLEAN
-  'ativoSubdepartamento', // BOOLEAN
-  'barcodeProduto', // STRING
-  'descricaoProduto', // STRING
-  'estoqueControlado', // BOOLEAN
+  'id_produto', // INTEGER
+  'id_departamento', // INTEGER
+  'id_subdepartamento', // INTEGER
+  'atacado_qtde', // INTEGER
+  'atacado_valor', // INTEGER/FLOAT
+  'ativo_departamento', // BOOLEAN
+  'ativo_subdepartamento', // BOOLEAN
+  'barcode_produto', // STRING
+  'descricao_produto', // STRING
+  'estoque_controlado', // BOOLEAN
   'industrializado', // BOOLEAN
-  'nomeDepartamento', // STRING
-  'nomeProduto', // STRING
-  'nomeSubdepartamento', // STRING
-  'percentualLimiteVenda', // INTEGER/FLOAT
-  'pesavelFracao', // FLOAT
-  'pesavelStatus', // BOOLEAN
-  'pesavelTipo', // STRING
-  'precoVenda', // FLOAT
-  'produtoAtivo', // BOOLEAN
-  'qtdeEstoqueAtual', // INTEGER/FLOAT
-  'qtdeEstoqueMinimo', // INTEGER/FLOAT
-  'qtdeLimiteVenda', // INTEGER/FLOAT
+  'nome_departamento', // STRING
+  'nome_produto', // STRING
+  'nome_subdepartamento', // STRING
+  'percentual_limite_venda', // INTEGER/FLOAT
+  'pesavel_fracao', // FLOAT
+  'pesavel_status', // BOOLEAN
+  'pesavel_tipo', // STRING
+  'preco_venda', // FLOAT
+  'produto_ativo', // BOOLEAN
+  'qtde_estoque_atual', // INTEGER/FLOAT
+  'qtde_estoque_minimo', // INTEGER/FLOAT
+  'qtde_limite_venda', // INTEGER/FLOAT
   'destaque', // BOOLEAN
 ];
 
 export const FORMAS_REQ_FIELDS: string[] = [
-  'idInterno', // STRING
-  'formaAtiva', // BOOLEAN
-  'nomeForma', // STRING
-  'idExterno', // STRING
+  'id_interno', // INTEGER
+  'forma_ativa', // BOOLEAN
+  'nome_forma', // STRING
+  'id_externo', // STRING
 ];
 
 export const ESTOQUE_REQ_FIELDS: string[] = [
-  'idProduto', // STRING
-  'barcodeProduto', // STRING
-  'nomeProduto', // STRING
-  'qtdeEstoqueAtual', // INTEGER/FLOAT
-  'qtdeEstoqueMinimo', // INTEGER/FLOAT
+  'id_produto', // STRING
+  'barcode_produto', // STRING
+  'nome_produto', // STRING
+  'qtde_estoque_atual', // INTEGER/FLOAT
+  'qtde_estoque_minimo', // INTEGER/FLOAT
 ];
 
 // Apis
@@ -55,159 +55,159 @@ export const API_URL = {
 
 // estoque
 export const CAMPOS_ESTOQUE: any = {
-  idProduto: {
-    type: DataTypes.STRING,
-    field: 'idProduto',
+  id_produto: {
+    type: DataTypes.INTEGER,
+    field: 'id_produto',
     primaryKey: true
   },
-  estoqueControlado: {
+  estoque_controlado: {
     type: DataTypes.BOOLEAN,
-    field: 'estoqueControlado'
+    field: 'estoque_controlado'
   },
-  barcodeProduto: {
+  barcode_produto: {
     type: DataTypes.STRING,
-    field: 'barcodeProduto'
+    field: 'barcode_produto'
   },
-  nomeProduto: {
+  nome_produto: {
     type: DataTypes.STRING,
-    field: 'nomeProduto'
+    field: 'nome_produto'
   },
-  idLoja: {
-    type: DataTypes.STRING,
-    field: 'idLoja'
+  id_loja: {
+    type: DataTypes.INTEGER,
+    field: 'id_loja'
   },
-  qtdeEstoqueMinimo: {
+  qtde_estoque_minimo: {
     type: DataTypes.DECIMAL,
-    field: 'qtdeEstoqueMinimo'
+    field: 'qtde_estoque_minimo'
   },
-  qtdeEstoqueAtual: {
+  qtde_estoque_atual: {
     type: DataTypes.DECIMAL,
-    field: 'qtdeEstoqueAtual'
+    field: 'qtde_estoque_atual'
   },
 };
 
 // formas pgto
 export const CAMPOS_FORMAS: any = {
-  idInterno: {
-    type: DataTypes.STRING,
-    field: 'idInterno',
+  id_interno: {
+    type: DataTypes.INTEGER,
+    field: 'id_interno',
     primaryKey: true
   },
-  idExterno: {
+  id_externo: {
     type: DataTypes.STRING,
-    field: 'idExterno'
+    field: 'id_externo'
   },
-  nomeForma: {
+  nome_forma: {
     type: DataTypes.STRING,
-    field: 'nomeForma'
+    field: 'nome_forma'
   },
-  idLoja: {
-    type: DataTypes.STRING,
-    field: 'idLoja'
+  id_loja: {
+    type: DataTypes.INTEGER,
+    field: 'id_loja'
   }
 };
 
 // produtos
 export const CAMPOS_PRODUTOS: any = {
-  idProduto: {
-    type: DataTypes.STRING,
-    field: 'idProduto',
+  id_produto: {
+    type: DataTypes.INTEGER,
+    field: 'id_produto',
     primaryKey: true
   },
-  idLoja: {
-    type: DataTypes.STRING,
-    field: 'idLoja'
-  },
-  estoqueControlado: {
-    type: DataTypes.BOOLEAN,
-    field: 'estoqueControlado'
-  },
-  barcodeProduto: {
-    type: DataTypes.STRING,
-    field: 'barcodeProduto'
-  },
-  idDepartamento: {
-    type: DataTypes.STRING,
-    field: 'idDepartamento'
-  },
-  nomeDepartamento: {
-    type: DataTypes.STRING,
-    field: 'nomeDepartamento'
-  },
-  ativoDepartamento: {
-    type: DataTypes.BOOLEAN,
-    field: 'ativoDepartamento'
-  },
-  nomeProduto: {
-    type: DataTypes.STRING,
-    field: 'nomeProduto'
-  },
-  precoVenda: {
-    type: DataTypes.DECIMAL,
-    field: 'precoVenda'
-  },
-  produtoAtivo: {
-    type: DataTypes.BOOLEAN,
-    field: 'produtoAtivo'
-  },
-  atacadoQtde: {
+  id_loja: {
     type: DataTypes.INTEGER,
-    field: 'atacadoQtde'
+    field: 'id_loja'
   },
-  atacadoValor: {
-    type: DataTypes.DECIMAL,
-    field: 'atacadoValor'
+  estoque_controlado: {
+    type: DataTypes.BOOLEAN,
+    field: 'estoque_controlado'
   },
-  descricaoProduto: {
+  barcode_produto: {
     type: DataTypes.STRING,
-    field: 'descricaoProduto'
+    field: 'barcode_produto'
+  },
+  id_departamento: {
+    type: DataTypes.INTEGER,
+    field: 'id_departamento'
+  },
+  nome_departamento: {
+    type: DataTypes.STRING,
+    field: 'nome_departamento'
+  },
+  ativo_departamento: {
+    type: DataTypes.BOOLEAN,
+    field: 'ativo_departamento'
+  },
+  nome_produto: {
+    type: DataTypes.STRING,
+    field: 'nome_produto'
+  },
+  preco_venda: {
+    type: DataTypes.DECIMAL,
+    field: 'preco_venda'
+  },
+  produto_ativo: {
+    type: DataTypes.BOOLEAN,
+    field: 'produto_ativo'
+  },
+  atacado_qtde: {
+    type: DataTypes.INTEGER,
+    field: 'atacado_qtde'
+  },
+  atacado_valor: {
+    type: DataTypes.DECIMAL,
+    field: 'atacado_valor'
+  },
+  descricao_produto: {
+    type: DataTypes.STRING,
+    field: 'descricao_produto'
   },
   industrializado: {
     type: DataTypes.BOOLEAN,
     field: 'industrializado'
   },
-  idSubdepartamento: {
+  id_subdepartamento: {
+    type: DataTypes.INTEGER,
+    field: 'id_subdepartamento'
+  },
+  nome_subdepartamento: {
     type: DataTypes.STRING,
-    field: 'idSubdepartamento'
+    field: 'nome_subdepartamento'
   },
-  nomeSubdepartamento: {
-    type: DataTypes.STRING,
-    field: 'nomeSubdepartamento'
-  },
-  ativoSubdepartamento: {
+  ativo_subdepartamento: {
     type: DataTypes.BOOLEAN,
-    field: 'ativoSubdepartamento'
+    field: 'ativo_subdepartamento'
   },
-  pesavelStatus: {
+  pesavel_status: {
     type: DataTypes.BOOLEAN,
-    field: 'pesavelStatus'
+    field: 'pesavel_status'
   },
-  pesavelFracao: {
+  pesavel_fracao: {
     type: DataTypes.DECIMAL,
-    field: 'pesavelFracao'
+    field: 'pesavel_fracao'
   },
-  pesavelTipo: {
+  pesavel_tipo: {
     type: DataTypes.STRING,
-    field: 'pesavelTipo'
+    field: 'pesavel_tipo'
   },
   destaque: {
     type: DataTypes.BOOLEAN,
     field: 'destaque'
   },
-  qtdeEstoqueMinimo: {
+  qtde_estoque_minimo: {
     type: DataTypes.DECIMAL,
-    field: 'qtdeEstoqueMinimo'
+    field: 'qtde_estoque_minimo'
   },
-  qtdeEstoqueAtual: {
+  qtde_estoque_atual: {
     type: DataTypes.DECIMAL,
-    field: 'qtdeEstoqueAtual'
+    field: 'qtde_estoque_atual'
   },
-  percentualLimiteVenda: {
+  percentual_limite_venda: {
     type: DataTypes.DECIMAL,
-    field: 'percentualLimiteVenda'
+    field: 'percentual_limite_venda'
   },
-  qtdeLimiteVenda: {
+  qtde_limite_venda: {
     type: DataTypes.DECIMAL,
-    field: 'qtdeLimiteVenda'
+    field: 'qtde_limite_venda'
   },
 };

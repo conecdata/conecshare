@@ -27,6 +27,8 @@
     "mysql2": "^2.2.5",
     "nedb": "^1.8.0",
     "object-hash": "^2.0.3",
+    "pg": "^8.5.0",
+    "pg-hstore": "^2.3.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "sequelize": "^6.3.5",

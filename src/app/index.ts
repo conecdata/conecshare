@@ -173,29 +173,29 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
             const CSV_PATH: string = `${PASTA_CSV}\\produtos\\${ID_LOJA}.csv`;
             const EXTENSION: string = path.extname(CSV_PATH).toLowerCase();
             const FIELDPOS = {
-              idProduto: -1,
-              idDepartamento: -1,
-              idSubdepartamento: -1,
-              atacadoQtde: -1,
-              atacadoValor: -1,
-              ativoDepartamento: -1,
-              ativoSubdepartamento: -1,
-              barcodeProduto: -1,
-              descricaoProduto: -1,
-              estoqueControlado: -1,
+              id_produto: -1,
+              id_departamento: -1,
+              id_subdepartamento: -1,
+              atacado_qtde: -1,
+              atacado_valor: -1,
+              ativo_departamento: -1,
+              ativo_subdepartamento: -1,
+              barcode_produto: -1,
+              descricao_produto: -1,
+              estoque_controlado: -1,
               industrializado: -1,
-              nomeDepartamento: -1,
-              nomeProduto: -1,
-              nomeSubdepartamento: -1,
-              percentualLimiteVenda: -1,
-              pesavelFracao: -1,
-              pesavelStatus: -1,
-              pesavelTipo: -1,
-              precoVenda: -1,
-              produtoAtivo: -1,
-              qtdeEstoqueAtual: -1,
-              qtdeEstoqueMinimo: -1,
-              qtdeLimiteVenda: -1,
+              nome_departamento: -1,
+              nome_produto: -1,
+              nome_subdepartamento: -1,
+              percentual_limite_venda: -1,
+              pesavel_fracao: -1,
+              pesavel_status: -1,
+              pesavel_tipo: -1,
+              preco_venda: -1,
+              produto_ativo: -1,
+              qtde_estoque_atual: -1,
+              qtde_estoque_minimo: -1,
+              qtde_limite_venda: -1,
               destaque: -1,
             };
             if (EXTENSION !== '.csv') {
@@ -280,80 +280,80 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       .split(';')
                       .map((r: string) => r.toLowerCase() === 'null' ? '' : r.trim());
                     // console.log(ROW);
-                    const ID_SUBDEPARTAMENTO: string = `${ROW[FIELDPOS['idSubdepartamento']]}`.trim();
+                    const ID_SUBDEPARTAMENTO: string = `${ROW[FIELDPOS['id_subdepartamento']]}`.trim();
                     const PRODUTO = {
-                      'idProduto': FIELDPOS['idProduto'] >= 0
-                        && `${ROW[FIELDPOS['idProduto']].trim()}`,
+                      'id_produto': FIELDPOS['id_produto'] >= 0
+                        && `${ROW[FIELDPOS['id_produto']].trim()}`,
 
-                      'barcodeProduto': FIELDPOS['barcodeProduto'] >= 0
-                        && `${ROW[FIELDPOS['barcodeProduto']].trim()}`,
+                      'barcode_produto': FIELDPOS['barcode_produto'] >= 0
+                        && `${ROW[FIELDPOS['barcode_produto']].trim()}`,
 
-                      'nomeProduto': FIELDPOS['nomeProduto'] >= 0
-                        && `${ROW[FIELDPOS['nomeProduto']].trim()}`,
+                      'nome_produto': FIELDPOS['nome_produto'] >= 0
+                        && `${ROW[FIELDPOS['nome_produto']].trim()}`,
 
-                      'precoVenda': FIELDPOS['precoVenda'] >= 0
-                        && parseFloat(ROW[FIELDPOS['precoVenda']] || ''),
+                      'preco_venda': FIELDPOS['preco_venda'] >= 0
+                        && parseFloat(ROW[FIELDPOS['preco_venda']] || ''),
 
-                      'idDepartamento': FIELDPOS['idDepartamento'] >= 0
-                        && `${ROW[FIELDPOS['idDepartamento']].trim()}`,
+                      'id_departamento': FIELDPOS['id_departamento'] >= 0
+                        && `${ROW[FIELDPOS['id_departamento']].trim()}`,
 
-                      'nomeDepartamento': FIELDPOS['nomeDepartamento'] >= 0
-                        && `${ROW[FIELDPOS['nomeDepartamento']].trim()}`,
+                      'nome_departamento': FIELDPOS['nome_departamento'] >= 0
+                        && `${ROW[FIELDPOS['nome_departamento']].trim()}`,
 
-                      'ativoDepartamento': FIELDPOS['ativoDepartamento'] >= 0
-                        && parseInt(ROW[FIELDPOS['ativoDepartamento']] || '') > 0,
+                      'ativo_departamento': FIELDPOS['ativo_departamento'] >= 0
+                        && parseInt(ROW[FIELDPOS['ativo_departamento']] || '') > 0,
 
-                      'atacadoQtde': FIELDPOS['atacadoQtde'] >= 0
-                        && parseFloat(ROW[FIELDPOS['atacadoQtde']] || ''),
+                      'atacado_qtde': FIELDPOS['atacado_qtde'] >= 0
+                        && parseFloat(ROW[FIELDPOS['atacado_qtde']] || ''),
 
-                      'atacadoValor': FIELDPOS['atacadoValor'] >= 0
-                        && parseFloat(ROW[FIELDPOS['atacadoValor']] || ''),
+                      'atacado_valor': FIELDPOS['atacado_valor'] >= 0
+                        && parseFloat(ROW[FIELDPOS['atacado_valor']] || ''),
 
                       'industrializado': FIELDPOS['industrializado'] >= 0
                         && parseInt(ROW[FIELDPOS['industrializado']] || '') > 0,
 
-                      'idSubdepartamento': FIELDPOS['idSubdepartamento'] >= 0
+                      'id_subdepartamento': FIELDPOS['id_subdepartamento'] >= 0
                         && (ID_SUBDEPARTAMENTO === '0' ? '' : ID_SUBDEPARTAMENTO)
                         || '',
 
-                      'nomeSubdepartamento': FIELDPOS['nomeSubdepartamento'] >= 0
-                        && `${ROW[FIELDPOS['nomeSubdepartamento']].trim()}`,
+                      'nome_subdepartamento': FIELDPOS['nome_subdepartamento'] >= 0
+                        && `${ROW[FIELDPOS['nome_subdepartamento']].trim()}`,
 
-                      'ativoSubdepartamento': FIELDPOS['ativoSubdepartamento'] >= 0
-                        && parseInt(ROW[FIELDPOS['ativoSubdepartamento']] || '') > 0,
+                      'ativo_subdepartamento': FIELDPOS['ativo_subdepartamento'] >= 0
+                        && parseInt(ROW[FIELDPOS['ativo_subdepartamento']] || '') > 0,
 
-                      'produtoAtivo': FIELDPOS['produtoAtivo'] >= 0
-                        && parseInt(ROW[FIELDPOS['produtoAtivo']] || '') > 0,
+                      'produto_ativo': FIELDPOS['produto_ativo'] >= 0
+                        && parseInt(ROW[FIELDPOS['produto_ativo']] || '') > 0,
 
-                      'pesavelStatus': FIELDPOS['pesavelStatus'] >= 0
-                        && parseInt(ROW[FIELDPOS['pesavelStatus']] || '') > 0,
+                      'pesavel_status': FIELDPOS['pesavel_status'] >= 0
+                        && parseInt(ROW[FIELDPOS['pesavel_status']] || '') > 0,
 
-                      'percentualLimiteVenda': FIELDPOS['percentualLimiteVenda'] >= 0
-                        && parseFloat(ROW[FIELDPOS['percentualLimiteVenda']] || ''),
+                      'percentual_limite_venda': FIELDPOS['percentual_limite_venda'] >= 0
+                        && parseFloat(ROW[FIELDPOS['percentual_limite_venda']] || ''),
 
-                      'pesavelFracao': FIELDPOS['pesavelFracao'] >= 0
-                        && parseFloat(ROW[FIELDPOS['pesavelFracao']] || ''),
+                      'pesavel_fracao': FIELDPOS['pesavel_fracao'] >= 0
+                        && parseFloat(ROW[FIELDPOS['pesavel_fracao']] || ''),
 
-                      'pesavelTipo': FIELDPOS['pesavelTipo'] >= 0
-                        && `${ROW[FIELDPOS['pesavelTipo']].trim()}`,
+                      'pesavel_tipo': FIELDPOS['pesavel_tipo'] >= 0
+                        && `${ROW[FIELDPOS['pesavel_tipo']].trim()}`,
 
-                      'descricaoProduto': FIELDPOS['descricaoProduto'] >= 0
-                        && `${ROW[FIELDPOS['descricaoProduto']].trim()}`,
+                      'descricao_produto': FIELDPOS['descricao_produto'] >= 0
+                        && `${ROW[FIELDPOS['descricao_produto']].trim()}`,
 
                       'destaque': FIELDPOS['destaque'] >= 0
                         && parseInt(ROW[FIELDPOS['destaque']] || '') > 0,
 
-                      'qtdeEstoqueMinimo': FIELDPOS['qtdeEstoqueMinimo'] >= 0
-                        && parseFloat(ROW[FIELDPOS['qtdeEstoqueMinimo']] || ''),
+                      'qtde_estoque_minimo': FIELDPOS['qtde_estoque_minimo'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtde_estoque_minimo']] || ''),
 
-                      'qtdeEstoqueAtual': FIELDPOS['qtdeEstoqueAtual'] >= 0
-                        && parseFloat(ROW[FIELDPOS['qtdeEstoqueAtual']] || ''),
+                      'qtde_estoque_atual': FIELDPOS['qtde_estoque_atual'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtde_estoque_atual']] || ''),
 
-                      'qtdeLimiteVenda': FIELDPOS['qtdeLimiteVenda'] >= 0
-                        && parseFloat(ROW[FIELDPOS['qtdeLimiteVenda']] || ''),
+                      'qtde_limite_venda': FIELDPOS['qtde_limite_venda'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtde_limite_venda']] || ''),
 
-                      'estoqueControlado': FIELDPOS['estoqueControlado'] >= 0
-                        && parseInt(ROW[FIELDPOS['estoqueControlado']] || '') > 0,
+                      'estoque_controlado': FIELDPOS['estoque_controlado'] >= 0
+                        && parseInt(ROW[FIELDPOS['estoque_controlado']] || '') > 0,
                     };
                     PRODUTOS.push(PRODUTO);
                   } // if
@@ -433,10 +433,10 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
             const CSV_PATH: string = `${PASTA_CSV}\\formas-pgto\\${ID_LOJA}.csv`;
             const EXTENSION: string = path.extname(CSV_PATH).toLowerCase();
             const FIELDPOS = {
-              idInterno: -1,
-              formaAtiva: -1,
-              nomeForma: -1,
-              idExterno: -1
+              id_interno: -1,
+              forma_ativa: -1,
+              nome_forma: -1,
+              id_externo: -1
             };
             if (EXTENSION !== '.csv') {
               errorLog('Formato inválido. Apenas arquivos .csv são aceitos: config/config.ts: csv.path/formas-pgto/{idLoja}.csv');
@@ -521,17 +521,17 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       .map((r: string) => r.toLowerCase() === 'null' ? '' : r.trim());
                     // console.log(ROW);
                     const FORMA = {
-                      'idInterno': FIELDPOS['idInterno'] >= 0
-                        && `${ROW[FIELDPOS['idInterno']].trim()}`,
+                      'id_interno': FIELDPOS['id_interno'] >= 0
+                        && `${ROW[FIELDPOS['id_interno']].trim()}`,
 
-                      'formaAtiva': FIELDPOS['formaAtiva'] >= 0
-                        && parseInt(ROW[FIELDPOS['formaAtiva']] || '') > 0,
+                      'forma_ativa': FIELDPOS['forma_ativa'] >= 0
+                        && parseInt(ROW[FIELDPOS['forma_ativa']] || '') > 0,
 
-                      'nomeForma': FIELDPOS['nomeForma'] >= 0
-                        && `${ROW[FIELDPOS['nomeForma']].trim()}`,
+                      'nome_forma': FIELDPOS['nome_forma'] >= 0
+                        && `${ROW[FIELDPOS['nome_forma']].trim()}`,
 
-                      'idExterno': FIELDPOS['idExterno'] >= 0
-                        && `${ROW[FIELDPOS['idExterno']].trim()}`,
+                      'id_externo': FIELDPOS['id_externo'] >= 0
+                        && `${ROW[FIELDPOS['id_externo']].trim()}`,
                     };
                     FORMAS.push(FORMA);
                   } // if
@@ -615,11 +615,11 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
             const CSV_PATH: string = `${PASTA_CSV}\\estoque\\${ID_LOJA}.csv`;
             const EXTENSION: string = path.extname(CSV_PATH).toLowerCase();
             const FIELDPOS = {
-              idProduto: -1,
-              barcodeProduto: -1,
-              nomeProduto: -1,
-              qtdeEstoqueAtual: -1,
-              qtdeEstoqueMinimo: -1
+              id_produto: -1,
+              barcode_produto: -1,
+              nome_produto: -1,
+              qtde_estoque_atual: -1,
+              qtde_estoque_minimo: -1
             };
             if (EXTENSION !== '.csv') {
               errorLog('Formato inválido. Apenas arquivos .csv são aceitos: config/config.ts: csv.path/estoque/{idLoja}.csv');
@@ -704,20 +704,20 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       .map((r: string) => r.toLowerCase() === 'null' ? '' : r.trim());
                     // console.log(ROW);
                     const PRODUTO = {
-                      'idProduto': FIELDPOS['idProduto'] >= 0
-                        && `${ROW[FIELDPOS['idProduto']].trim()}`,
+                      'id_produto': FIELDPOS['id_produto'] >= 0
+                        && `${ROW[FIELDPOS['id_produto']].trim()}`,
 
-                      'barcodeProduto': FIELDPOS['barcodeProduto'] >= 0
-                        && `${ROW[FIELDPOS['barcodeProduto']].trim()}`,
+                      'barcode_produto': FIELDPOS['barcode_produto'] >= 0
+                        && `${ROW[FIELDPOS['barcode_produto']].trim()}`,
 
-                      'nomeProduto': FIELDPOS['nomeProduto'] >= 0
-                        && `${ROW[FIELDPOS['nomeProduto']].trim()}`,
+                      'nome_produto': FIELDPOS['nome_produto'] >= 0
+                        && `${ROW[FIELDPOS['nome_produto']].trim()}`,
 
-                      'qtdeEstoqueMinimo': FIELDPOS['qtdeEstoqueMinimo'] >= 0
-                        && parseFloat(ROW[FIELDPOS['qtdeEstoqueMinimo']] || ''),
+                      'qtde_estoque_minimo': FIELDPOS['qtde_estoque_minimo'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtde_estoque_minimo']] || ''),
 
-                      'qtdeEstoqueAtual': FIELDPOS['qtdeEstoqueAtual'] >= 0
-                        && parseFloat(ROW[FIELDPOS['qtdeEstoqueAtual']] || '')
+                      'qtde_estoque_atual': FIELDPOS['qtde_estoque_atual'] >= 0
+                        && parseFloat(ROW[FIELDPOS['qtde_estoque_atual']] || '')
                     };
                     ESTOQUE.push(PRODUTO);
                   } // if

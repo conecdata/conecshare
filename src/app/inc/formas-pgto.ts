@@ -5,10 +5,7 @@ import {
   CAMPOS_FORMAS
 } from '../consts';
 import { CONFIG } from '../config/config';
-import {
-  get,
-  uniqBy
-} from 'lodash';
+import { get } from 'lodash';
 import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { CONFIG_FORMAS } from '../config/origens/config-formas-pgto';
 var hash = require('object-hash');
@@ -63,7 +60,7 @@ export async function buscaFormasDB(
       return Forma.findAll(
         {
           where: {
-            idLoja: idLoja
+            id_loja: +idLoja
           }
         }
       );
@@ -101,7 +98,7 @@ export async function syncFormas(
 
       const FORMA = formas[i] || {};
       // console.log(FORMA);
-      const ID_FORMA: string = get(FORMA, 'idInterno') || '';
+      const ID_FORMA: string = get(FORMA, 'id_interno') || '';
 
       try {
         count += await findOne(
@@ -158,11 +155,11 @@ function findOne(
   forma: any
 ): Promise<number> {
   return new Promise((resolve, reject) => {
-    const ID_FORMA: string = get(forma, 'idInterno') || '';
+    const ID_FORMA: string = get(forma, 'id_interno') || '';
     // console.log(ID_FORMA);
     const BODY_FORMA = {
-      "ativo": !!get(forma, 'formaAtiva', true),
-      "nossoId": get(forma, 'idExterno') || ''
+      "ativo": !!get(forma, 'forma_ativa', true),
+      "nossoId": get(forma, 'id_externo') || ''
     };
     // console.log(BODY_FORMA);
     const HASH_FORMA: string = hash(BODY_FORMA);

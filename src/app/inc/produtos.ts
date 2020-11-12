@@ -90,7 +90,7 @@ export async function buscaProdutosDB(
       return Produto.findAll(
         {
           where: {
-            idLoja: idLoja
+            id_loja: +idLoja
           }
         }
       );
@@ -119,19 +119,19 @@ export function buscaDepartamentosSubdepartamentos(produtos: any[]): {
 
     // Gera lista de departamentos dos produtos.
     RETORNO.departamentos.push({
-      _id: `${get(produtos[i], 'idDepartamento') || ''}`,
-      ativo: !!get(produtos[i], 'ativoDepartamento'),
-      nome: get(produtos[i], 'nomeDepartamento') || ''
+      _id: `${get(produtos[i], 'id_departamento') || ''}`,
+      ativo: !!get(produtos[i], 'ativo_departamento'),
+      nome: get(produtos[i], 'nome_departamento') || ''
     });
 
     // Gera lista de subdepartamentos dos produtos.
     // console.log('idSubdepartamento', get(produtos[i], 'idSubdepartamento') || '');
-    if (get(produtos[i], 'idSubdepartamento') || '') {
+    if (get(produtos[i], 'id_subdepartamento') || '') {
       RETORNO.subdepartamentos.push({
-        _id: `${get(produtos[i], 'idSubdepartamento') || ''}`,
-        idDepartamento: `${get(produtos[i], 'idDepartamento') || ''}`,
-        ativo: !!get(produtos[i], 'ativoSubdepartamento'),
-        nome: get(produtos[i], 'nomeSubdepartamento') || ''
+        _id: `${get(produtos[i], 'id_subdepartamento') || ''}`,
+        idDepartamento: `${get(produtos[i], 'id_departamento') || ''}`,
+        ativo: !!get(produtos[i], 'ativo_subdepartamento'),
+        nome: get(produtos[i], 'nome_subdepartamento') || ''
       });
     } // if
   } // for
@@ -169,7 +169,7 @@ export async function syncProdutos(
 
       const PRODUTO = produtos[i] || {};
       // console.log(PRODUTO);
-      const ID_PRODUTO: string = get(PRODUTO, 'idProduto') || '';
+      const ID_PRODUTO: string = get(PRODUTO, 'id_produto') || '';
 
       try {
         count += await findOne(
@@ -227,16 +227,16 @@ function findOne(
 ): Promise<number> {
   return new Promise((resolve, reject) => {
     // console.log(produto);
-    const ID_PRODUTO: string = get(produto, 'idProduto') || '';
+    const ID_PRODUTO: string = get(produto, 'id_produto') || '';
     // console.log(ID_PRODUTO);
     const ESTOQUE = {
-      controlado: !!get(produto, 'estoqueControlado'),
-      min: parseFloat(get(produto, 'qtdeEstoqueMinimo')) || 0,
-      atual: parseFloat(get(produto, 'qtdeEstoqueAtual')) || 0
+      controlado: !!get(produto, 'estoque_controlado'),
+      min: parseFloat(get(produto, 'qtde_estoque_minimo')) || 0,
+      atual: parseFloat(get(produto, 'qtde_estoque_atual')) || 0
     };
     const LIMITE_VENDA = {
-      percentual: parseFloat(get(produto, 'percentualLimiteVenda')) || 0,
-      qtde: parseFloat(get(produto, 'qtdeLimiteVenda')) || 0,
+      percentual: parseFloat(get(produto, 'percentual_limite_venda')) || 0,
+      qtde: parseFloat(get(produto, 'qtde_limite_venda')) || 0,
       menorValor: 0
     };
     const VAL_PERCENTUAL: number = ESTOQUE.atual * (LIMITE_VENDA.percentual / 100);
@@ -253,28 +253,28 @@ function findOne(
       : VAL_PERCENTUAL;
     const BODY_PRODUTO = {
       "atacado": {
-        "qtde": parseFloat(get(produto, 'atacadoQtde')) || 0,
-        "valor": parseFloat(get(produto, 'atacadoValor')) || 0,
+        "qtde": parseFloat(get(produto, 'atacado_qtde')) || 0,
+        "valor": parseFloat(get(produto, 'atacado_valor')) || 0,
       },
-      "ativo": !!get(produto, 'produtoAtivo', true),
-      "barcode": get(produto, 'barcodeProduto') || '',
-      "descricao": get(produto, 'descricaoProduto') || '',
+      "ativo": !!get(produto, 'produto_ativo', true),
+      "barcode": get(produto, 'barcode_produto') || '',
+      "descricao": get(produto, 'descricao_produto') || '',
       "estoqueMinimo": ESTOQUE.controlado && ESTOQUE.min
         ? ESTOQUE.atual <= ESTOQUE.min
         : false,
-      "idDepartamento": get(produto, 'idDepartamento') || '',
-      "idSubdepartamento": get(produto, 'idSubdepartamento') || '',
+      "idDepartamento": get(produto, 'id_departamento') || '',
+      "idSubdepartamento": get(produto, 'id_subdepartamento') || '',
       "industrializado": !!get(produto, 'industrializado', true),
       "limiteVenda": LIMITE_VENDA.menorValor,
       "pesavel": {
-        "status": !!get(produto, 'pesavelStatus', false),
+        "status": !!get(produto, 'pesavel_status', false),
         "unidade": {
-          "fracao": parseFloat(get(produto, 'pesavelFracao')) || 0,
-          "tipo": get(produto, 'pesavelTipo') || ''
+          "fracao": parseFloat(get(produto, 'pesavel_fracao')) || 0,
+          "tipo": get(produto, 'pesavel_tipo') || ''
         }
       },
-      "nome": get(produto, 'nomeProduto') || '',
-      "preco": parseFloat(get(produto, 'precoVenda')) || 0,
+      "nome": get(produto, 'nome_produto') || '',
+      "preco": parseFloat(get(produto, 'preco_venda')) || 0,
       "destaque": !!get(produto, 'destaque', false)
     };
     // console.log(BODY_PRODUTO);

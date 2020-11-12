@@ -1,11 +1,11 @@
 export const CONFIG = {
   db: {
     conexao: {
-      host: 'localhost',
-      tabela: 'modelo_conecdata',
-      usuario: 'root',
-      senha: 'masterkey',
-      tipo: 'mysql', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+      host: '45.178.225.94',
+      tabela: 'conecsync2',
+      usuario: 'cdatadb',
+      senha: 'datapass@2',
+      tipo: 'postgres', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
       /*
       $ npm install --save pg pg-hstore # Postgres
       $ npm install --save mysql2

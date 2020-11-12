@@ -2,7 +2,7 @@
 export const CONFIG_PRODUTOS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'db', // 'db' | 'csv' | ''
+  tipo: '', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
   nomeView: 'view_conecdata_produtos', // db
@@ -15,91 +15,91 @@ export const CONFIG_PRODUTOS = {
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    pro_pk AS idProduto,
-    pro_c_barcode AS barcodeProduto,
-    pro_f_preco AS precoVenda,
+    pro_pk AS id_produto,
+    pro_c_barcode AS barcode_produto,
+    pro_f_preco AS preco_venda,
     
-    pro_fk_grupo AS idDepartamento,
-    gru_c_grupo AS nomeDepartamento,
-    gru_b_ativo AS ativoDepartamento,
+    pro_fk_grupo AS id_departamento,
+    gru_c_grupo AS nome_departamento,
+    gru_b_ativo AS ativo_departamento,
     
-    0 AS idSubdepartamento,
-    '' AS nomeSubdepartamento,
-    0 AS ativoSubdepartamento,
+    0 AS id_subdepartamento,
+    '' AS nome_subdepartamento,
+    0 AS ativo_subdepartamento,
     
     1 AS industrializado,
-    '' AS nomeProduto,
+    '' AS nome_produto,
         
-    0 AS estoqueControlado,
-    0 AS qtdeEstoqueMinimo,
-    0 AS qtdeEstoqueAtual,
+    0 AS estoque_controlado,
+    0 AS qtde_estoque_minimo,
+    0 AS qtde_estoque_atual,
     
-    0 AS atacadoQtde,
-    0 AS atacadoValor,
+    0 AS atacado_qtde,
+    0 AS atacado_valor,
     
-    0 AS percentualLimiteVenda,
-    0 AS qtdeLimiteVenda,    
+    0 AS percentual_limite_venda,
+    0 AS qtde_limite_venda,
   
-    0 AS pesavelStatus,
-    0 AS pesavelFracao,
-    '' AS pesavelTipo,
+    0 AS pesavel_status,
+    0 AS pesavel_fracao,
+    '' AS pesavel_tipo,
     
-    1 AS produtoAtivo,
+    1 AS produto_ativo,
    
-    '' AS descricaoProduto,
+    '' AS descricao_produto,
 
     0 AS destaque,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
     grupos AS departamentos ON produtos.pro_fk_grupo = departamentos.gru_pk
 */
 
-//  VERSÃO COMPLETA 
+//  VERSÃO COMPLETA
 /* 
   DROP VIEW view_conecdata_produtos;
 
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    pro_pk AS idProduto,
-    pro_c_barcode AS barcodeProduto,
-    pro_f_preco AS precoVenda,
+    pro_pk AS id_produto,
+    pro_c_barcode AS barcode_produto,
+    pro_f_preco AS preco_venda,
     
-    pro_fk_grupo AS idDepartamento,
-    gru_c_grupo AS nomeDepartamento,
-    gru_b_ativo AS ativoDepartamento,
+    pro_fk_grupo AS id_departamento,
+    gru_c_grupo AS nome_departamento,
+    gru_b_ativo AS ativo_departamento,
     
-    pro_fk_subgrupo AS idSubdepartamento,
-    sub_c_subgrupo AS nomeSubdepartamento,
-    sub_b_ativo AS ativoSubdepartamento,
+    pro_fk_subgrupo AS id_subdepartamento,
+    sub_c_subgrupo AS nome_subdepartamento,
+    sub_b_ativo AS ativo_subdepartamento,
     
     pro_b_industrializado AS industrializado,
-    pro_c_produto AS nomeProduto,
+    pro_c_produto AS nome_produto,
         
-    pro_b_estoque AS estoqueControlado,
-    pro_f_est_min AS qtdeEstoqueMinimo,
-    pro_f_est_qtde_loja AS qtdeEstoqueAtual,
+    pro_b_estoque AS estoque_controlado,
+    pro_f_qtde_estoque_min AS qtde_estoque_minimo,
+    pro_f_qtde_estoque_loja AS qtde_estoque_atual,
     
-    pro_f_qtde_atacado AS atacadoQtde,
-    pro_f_valor_atacado AS atacadoValor,
+    pro_f_qtde_atacado AS atacado_qtde,
+    pro_f_valor_atacado AS atacado_valor,
     
-    pro_f_perc_limite_venda AS percentualLimiteVenda,
-    pro_f_qtde_limite_venda AS qtdeLimiteVenda,    
+    pro_f_perc_limite_venda AS percentual_limite_venda,
+    pro_f_qtde_limite_venda AS qtde_limite_venda,
   
-    pro_b_fracionado AS pesavelStatus,
-    pro_f_pesavel_fracao AS pesavelFracao,
-    pro_c_pesavel_tipo AS pesavelTipo,
+    pro_b_fracionado AS pesavel_status,
+    pro_f_pesavel_fracao AS pesavel_fracao,
+    pro_c_pesavel_tipo AS pesavel_tipo,
     
-    pro_b_ativo AS produtoAtivo,
+    pro_b_ativo AS produto_ativo,
    
-    pro_c_descricao AS descricaoProduto,
+    pro_c_descricao AS descricao_produto,
 
     pro_b_destaque AS destaque,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
