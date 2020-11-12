@@ -156,7 +156,7 @@ Nesse tipo de origem, os dados são lidos de [views](#glossario-views) geradas a
 Caso (apesar dos esclarecimentos do tópico anterior) você não queira ou por qualquer outro motivo, não possa, utilizar o script (gerenciadores db incompatíveis, nosql...), você pode escrever você mesmo um código que exporte as informações necessárias para arquivos [CSVs](#glossario-csv) (mais adiante a documentação orientará como isso deve ser feito em maiores detalhes) e indicá-los como origem para sincronização.
 # Instalação
 
-Bom, se você chegou até aqui vamos presumir que já está familizarizado com os termos gerais, os tipos disponíveis de sincronização (e optou por alguma que use o **ConecSync**),  já sabe que pode optar por tipos de origens **DB** ou **CSV**, que pode escolher quais plataformas (integrações) compatíveis com o script deseja sincronizar. Apesar de que tudo isso será explicado mais detalhadamente e demonstrado no restante da documentação, nada vai acontecer de fato, antes que realizemos a instalação das dependências necessárias.
+Bom, se você chegou até aqui vamos presumir que já está familizarizado com os termos gerais, os tipos disponíveis de sincronização (e optou por alguma que use o **ConecSync**), já sabe que pode optar por tipos de origens **DB** ou **CSV** e que pode escolher quais plataformas (integrações) compatíveis com o script deseja sincronizar. Apesar de que tudo isso será explicado mais detalhadamente e demonstrado no restante da documentação, nada vai acontecer de fato, antes que realizemos a instalação das dependências necessárias.
 
 ## Instalação NodeJs<a id="instalacao-nodejs"></a>
 O Node Js permite a execução de scripts javascript fora do browser. Ele deverá estar instalado em uma máquina que tenha acesso às origens de dados desejadas para que o script **ConecSync** seja executado, baixe o Node Js [aqui](https://nodejs.org/en/) e siga as instruções para instalação em sua plataforma.
@@ -183,6 +183,7 @@ As alterações que você deverá fazer no **ConecSync**, estarão todas dentro 
 ![](https://firebasestorage.googleapis.com/v0/b/midia-dbd27.appspot.com/o/conecsync%2Ffolder_structure.jpg?alt=media)
 Pasta/arquivo|Descrição
 |:--|:--|
+integracao_modelo|Pasta contendo scripts sql e arquivos csv dos exemplos
 src|Pasta contendo códigos fontes e arquivos complementares
 src/app|Pasta contendo códigos fonte
 **src/app/config**|Pasta contendo os arquivos de configuração **que você DEVE modificar**
@@ -192,6 +193,7 @@ src/app/index.ts|Arquivo fonte principal do script
 .gitignore|Arquivo de exceções do github (oculto)
 package.json|Arquivo de configuração e dependências do projeto
 README.md|Arquivo contendo esse mesmo documento que você está lendo (formato markdown) 
+README.pdf|Arquivo contendo esse mesmo documento que você está lendo (formato PDF) 
 tsconfig.json|Arquivo de configuração do typescript
 tslint.json|Arquivo de configuração do typescript
 > Diversas outras pastas serão criadas posteriormente, o restante da documentação o notificará cada vez que isso acontecer.
@@ -216,7 +218,7 @@ Pasta/arquivo|Descrição
 node_modules|Pasta contendo dependências baixadas do projeto
 # Seguindo a integração de exemplo
 Como já vimos, é possível realizar a integração via **ConecSync** por *leitura do banco de dados* ou *arquivos [csv](#glossario-csv)*. Devido a isso, seguiremos um integração exemplo completa para cada uma dessas modalidades.
-> Os arquivos de exemplo com a estrutura e conteúdo das tabelas utilizados estão disponíveis na pasta **integracao_modelo/db** e os arquivos csv prontos para importação estarão na pasta **integracao_modelo/csv**.
+> Os arquivos de exemplo com a estrutura e conteúdo das tabelas utilizados estão disponíveis na pasta **integracao_modelo/db/mysql** e os arquivos csv prontos para importação estarão na pasta **integracao_modelo/csv**.
 
 A documentação foi formulada de maneira que você possa acompanhar os exemplos ou utilizá-la como material de consulta.
 Mesmo que você não queira executar os exemplos passa a passo, é importante analisar a estrutura das tabelas apresentadas, para entender os campos utilizados e como eles são indicados na criação das views, para que sirvam de modelo para criação de suas próprias views (substituindo os campos de exemplo pelos correspondentes em sua base de dados já existente).
@@ -224,8 +226,8 @@ Os passos necessários para acompanhar o exemplo, sempre estarão destacados com
 > <font color='SteelBlue'> **Acompanhando o exemplo DB/CSV**</font>
 >>  Passo a ser executado no exemplo.
 ## Integração modelo DB<a id="integracao-exemplo-integracao-modelo-db"></a>
-Utilizaremos um banco de dados MySql para nossa integração de modelo. Presumimos que você já tenha um servidor compatível com esse gerenciador de banco de dados em que a pasta do **ConecSync** esteja copiada.  
-> Mesmo que não esteja usando o MySql, os passos descritos serão praticamente os mesmos para os demais gerenciadores compatíveis.
+Utilizaremos um banco de dados MySql para nossa integração de modelo. Presumimos que você já tenha um servidor compatível com ele na máquina em que a pasta do **ConecSync** esteja copiada.  
+> Mesmo que não esteja usando o MySql, os passos descritos serão praticamente os mesmos para os demais gerenciadores compatíveis. Nos comentários dos arquivos de configuração constarão algumas variações dos diferentes gerenciadores.
 ### Criando o banco de dados<a id="integracao-exemplo-criando-db"></a>
 Utilizaremos a **gui** (interface gráfica) **phpmyadmin** para os exemplos, mas você pode criar as tabelas e preenchê-las da maneira que preferir.
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
@@ -249,12 +251,12 @@ Para que a interface gráfica funcione corretamente, você pode ter que logar co
 > >  `USE modelo_conecdata`
 
 ![](https://firebasestorage.googleapis.com/v0/b/midia-dbd27.appspot.com/o/conecsync%2Fphpmyadmin_use_database.jpg?alt=media)
-> Os scripts de criação das tabelas que serão executados a seguir, preventivamente, já selecionam esse database para uso, mas não custa prevenir fazendo isso aqui também, isso permitirá que você execute outros comandos para fazer testes, fora da execução dos scripts.
+> Os scripts de criação das tabelas que serão executados a seguir, preventivamente, já selecionam esse database para uso, mas não custa prevenir fazendo isso aqui também, isso permitirá que você execute outros comandos para fazer testes, fora da execução dos scripts. Normalmente, em uma *gui* (ambiente gráfico) do gerenciador, basta clicar ou clicar duas vezes sobre o nome do database para selecioná-lo para uso.
 
 ### Criando as tabelas modelo<a id="integracao-exemplo-criando-tabelas"></a>
 
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
->  Certifique-se que o database **modelo_conecdata** esteja criado e execute os scripts listados abaixo (em qualquer ordem), presentes na pasta **integracao_modelo/db** do projeto **ConecSync**. Copie seus conteúdos (um por vez) e os cole na textarea da guia **SQL** do **phpmyadmin** conforme já demonstrado anteriormente.
+>  Certifique-se que o database **modelo_conecdata** esteja criado e execute os scripts listados abaixo (em qualquer ordem), presentes na pasta **integracao_modelo/db/mysql** do projeto **ConecSync**. Copie o conteúdo de cada arquivo e cole-o na textarea da guia **SQL** do **phpmyadmin** conforme já explicado anteriormente.
 > > * grupos.sql
 > > * subgrupos.sql
 > > * produtos.sql
@@ -307,7 +309,7 @@ pro_f_valor_atacado |decimal|10,2|Preço de venda do produto por atacado
 pro_i_cod|integer|10|Código do produto (NÃO UTILIZADO)
 > Note que apesar das colunas correspondentes às chaves estrangeiras estarem presentes, elas não estão interligadas com as outras tabelas, conforme explicado anteriormente.
 
-Alguns campos indicados como NÃO UTILIZADOS, foram mantidos intencionalmente para demonstrar que nem todos campos presentes na tabela necessitam estar presentes na view. Como proceder no caso inverso, será demonstrado também mais tarde, como lidar com campos que não estejam presentes nas tabelas origem mas são requeridos na view.
+Alguns campos indicados como NÃO UTILIZADOS, foram mantidos intencionalmente para demonstrar que nem todos campos presentes na tabela necessitam estar presentes na view. O caso inverso, como lidar com campos que não estejam presentes nas tabelas origem mas são requeridos na view, também será explicado em breve.
 
 #### Tabela grupos<a id="integracao-exemplo-criando-tabelas-formas-pgto"></a>
 **tabela formas_pgto**
@@ -320,7 +322,7 @@ fpg_c_id_externo|string|40|Identificador dessa forma de pagamento na lista da Co
 > Nessa tabela, a coluna de id externo, relaciona suas formas de pagamento com seus correspondentes [nessa lista](https://firebasestorage.googleapis.com/v0/b/formas-pgto.appspot.com/o/formas-pgto-integracao.json?alt=media). Apenas formas constantes nessa lista podem ser sincronizadas, caso necessite de novas formas, entre em contato com a Conecdata para que elas sejam implementadas e você tenha novos identificadores para lançar em seu cadastro.
 
 Optamos por utilizar campos com uma nomenclatura estranha (gru_pk, pro_fk_grupo, fpg_c_forma, ...), intencionalmente, para deixar mais claro nos exemplos que virão de criação das [views](#glossaro-views), quais campos pertencem às tabelas origem (e portanto serão substituídos por nomes de campos dos seus próprios cadastros) e quais são os apelidos com nomes específicos (e que devem ser mantidos exatamente com exibidos na view).
-> Todos nomes de tabelas e também os nomes de campos seguindo essa nomenclatura exótica, utilizados em nossos exemplos, devem ser substuidos pelos correspondentes em sua base de dados, quando for fazer sua integração real.
+> Todos nomes de tabelas e também os nomes de campos seguindo essa nomenclatura exótica, utilizados em nossos exemplos, devem ser substuidos pelos correspondentes em sua base de dados quando for fazer sua integração real.
 
 ### Criando as views<a id="integracao-exemplo-criando-views"></a>
 Além dos motivos já citados anteriormente para a utilização de [views](#glossario-views), um que é essencial, é a possibilidade de se agrupar diversas tabelas em uma só (JOINS) facilitando sua consulta pelo **ConecSync**, as seguintes views podem ser criadas para servir de origem de dados para sincronização:
@@ -361,7 +363,7 @@ A parte mais complexa da integração pelo **ConecSync** provavelmente será a g
 Vamos analisar cada comando da view para entendê-la melhor:
 
 <font color='Orange'>DROP VIEW</font>
-Esse comando apaga uma eventual versão antiga da view, para que possamos criar uma nova versão, sem problemas.
+Esse comando apaga a versão antiga da view (caso exista), para que possamos criar uma nova versão, sem problemas.
 > Como veremos no próximo comando, você pode utilizar o nome que quiser para suas views, e obviamente, o nome da view sendo excluída aqui, deve corresponder ao que vai ser criada pelo comando seguinte.
 
 <font color='Orange'>CREATE VIEW</font>
@@ -388,42 +390,42 @@ fpg_c_legenda|-|**NÃO UTILIZADO**
 -|forma_ativa|<font color='tomato'> NÃO ENCONTRADO</font>
 -|id_loja|<font color='tomato'> NÃO ENCONTRADO</font>
 
-***Caso 1:*** Campos na tabela origem que correspondem a apelidos (situação <font color='green'>ENCONTRADO</font>)
+**Situação <font color='green'>ENCONTRADO</font>**: Campos na tabela origem que tem um apelido correspondente.
 ```
-    fpg_pk
-    fpg_c_forma
-    fpg_c_id_externo
+  fpg_pk
+  fpg_c_forma
+  fpg_c_id_externo
 ```
 Basta indicar o nome do campo antes do comando AS que o renomeia para o apelido correspondente.
 > Campos indicados que correspondam a identificadores (chaves primárias ou estrangeiras em SQL e uids em NoSqls) podem ser tanto do tipo número como string.
     
-***Caso 2:*** Campos na tabela origem que NÃO correspondem a apelidos (situação **NÃO UTILIZADO**)
+**Situação NÃO UTILIZADO**: Campos na tabela origem que NÃO correspondem a apelidos.
 ```
-	fpg_c_legenda
+  fpg_c_legenda
 ```
-Basta ignorar esses campos na composição da view, note que não existe referência a **fpg_c_legenda** no comando de geração da view **view_conecdata_formas** que apresentamos como modelo.
+Basta ignorar esses campos na composição da view, note que não existe referência a **fpg_c_legenda** no comando de geração da view **view_conecdata_formas** que apresentamos.
 
-***Caso 3:*** Apelidos na view que NÃO tem campos correspondentes na tabela de origem (situação <font color='tomato'> NÃO ENCONTRADO</font>)
+**Situação <font color='tomato'> NÃO ENCONTRADO</font>**: Apelidos na view que NÃO tem campos correspondentes na tabela de origem.
 ```
-	formaAtiva
-	idLoja
+  formaAtiva
+  idLoja
 ```
 Nesses casos devemos indicar um valor constante no lugar do nome de nosso campo de origem. 
 Em nosso exemplo, o valor constante **1** (number) foi atribuído ao apelido **formaAtiva** (boolean), indicando que TODAS formas de pagamento estão ativas. 
 > Lembre-se que para o MySql (gerenciador DB utilizado no exemplo), booleanos são números.
 
-Da mesma forma uma constante '1' (string) foi atribuída ao apelido **idLoja** indicando que TODAS essas formas pertencem à loja 1.
+Da mesma forma uma constante 1 (number) foi atribuída ao apelido **idLoja** indicando que TODAS essas formas pertencem à loja 1.
 > Todas lojas que geram origens de dados para integração, devem ter seus tokens de loja indicados (como veremos mais adiante na documentação) em configurações dos projetos utilizados.
 
-Você pode estar estranhando que o idLoja seja indicado como string e não número, uma vez que normalmente chaves primárias (identificadores) em bancos de dados relacionais, normalmente, são valores numéricos gerados automaticamente por autoincremento. Na verdade, você pode indicar todos ids para o **ConecSync** como números ou strings, pois eles serão convertidos para strings antes de serem utilizados, o motivo disso é que o script também permite integração com bancos de dados NoSql (normalmente importando seus dados de arquivos CSV), e nesses bancos de dados, normalmente os identificadores são strings geradas aleatoriamente.
+Normalmente, as chaves primárias (identificadores) em bancos de dados relacionais, são valores numéricos gerados automaticamente por autoincremento. Por esse motivo, presumiremos que origens de dados db passarão indicadores como valores numéricos e valores lidos de arquivos csv podem passar tanto números como strings.
 
 ***E SE*** eu tivesse uma coluna ***fpg_fk_loja*** para cada linha da tabela?
 Bastaria indicar essa coluna no lugar da constante na geração da view e repetir seu comando (lembre-se que ele apaga a view existente com seu primeiro comando). Dessa maneira, cada forma de pagamento poderia corresponder a uma loja específica e não todas à mesma loja como acontece se utilizarmos um valor constatante.
-`'1' AS idLoja`  vira `fpg_fk_loja AS idLoja`
+`1 AS idLoja`  vira `fpg_fk_loja AS idLoja`
 
 ***E SE*** eu tivesse uma coluna ***fpg_b_ativo*** para cada linha da tabela?
 Da mesma forma, bastaria indicar essa coluna no lugar da constante na view (lembre-se de precisa recriar a view após fazer isso). Dessa maneira, cada forma de pagamento poderia estar ou não ativa, e não todas ativas como acontece se utilizarmos uma valor constante.
-`'1' AS idLoja`  vira `fpg_fk_loja AS idLoja`
+`1 AS idLoja`  vira `fpg_fk_loja AS idLoja`
 > É claro que os nomes dos campos indicados devem existir nas tabelas, não é o caso do *idLoja*, uma vez que ele não existe na tabela modelo que criamos.
 
 <font color='Orange'>FROM</font>
@@ -445,42 +447,42 @@ Decidimos então, criar essa [view](#glossario-views) de maneira progressiva, ou
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    pro_pk AS idProduto,
-    pro_c_barcode AS barcodeProduto,
-    pro_f_preco AS precoVenda,
+    pro_pk AS id_produto,
+    pro_c_barcode AS barcode_produto,
+    pro_f_preco AS preco_venda,
     
-    pro_fk_grupo AS idDepartamento,
-    gru_c_grupo AS nomeDepartamento,
-    gru_b_ativo AS ativoDepartamento,
+    pro_fk_grupo AS id_departamento,
+    gru_c_grupo AS nome_departamento,
+    gru_b_ativo AS ativo_departamento,
     
-    0 AS idSubdepartamento,
-    '' AS nomeSubdepartamento,
-    0 AS ativoSubdepartamento,
+    0 AS id_subdepartamento,
+    '' AS nome_subdepartamento,
+    0 AS ativo_subdepartamento,
     
     1 AS industrializado,
-    '' AS nomeProduto,
+    '' AS nome_produto,
         
-    0 AS estoqueControlado,
-    0 AS qtdeEstoqueMinimo,
-    0 AS qtdeEstoqueAtual,
+    0 AS estoque_controlado,
+    0 AS qtde_estoque_minimo,
+    0 AS qtde_estoque_atual,
     
-    0 AS atacadoQtde,
-    0 AS atacadoValor,
+    0 AS atacado_qtde,
+    0 AS atacado_valor,
     
-    0 AS percentualLimiteVenda,
-    0 AS qtdeLimiteVenda,    
+    0 AS percentual_limite_venda,
+    0 AS qtde_limite_venda,
   
-    0 AS pesavelStatus,
-    0 AS pesavelFracao,
-    '' AS pesavelTipo,
+    0 AS pesavel_status,
+    0 AS pesavel_fracao,
+    '' AS pesavel_tipo,
     
-    1 AS produtoAtivo,
+    1 AS produto_ativo,
    
-    '' AS descricaoProduto,
+    '' AS descricao_produto,
 
     0 AS destaque,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
@@ -494,7 +496,7 @@ Já fomos apresentados aos comandos que compõem a [view](#glossario-views) no e
 A partir de agora, vamos implementar algumas modificações conjuntas na geração da [view](#glossario-views), cada uma com uma finalidade específica.
 
 <font color='Orange'>Incluindo subdepartamentos</font>
-Em nossa versão simplificada da view produtos, todos produtos indicam apenas seus departamentos (aqui chamados de grupos) e todos subdepartamentos (ou subgrupos, temos até uma tabela para eles) ignorados, pois no lugar de seus campos, foram indicados strings vazias, indicando dessa forma, que esses produtos devem ser atribuídos diretamente a um departamento e não a um subdepartamento dentro deles.
+Em nossa versão simplificada da view produtos, todos produtos indicam apenas seus departamentos (aqui chamados de grupos) e todos subdepartamentos (ou subgrupos, temos até uma tabela para eles) foram ignorados, pois no lugar de seus campos, foram fornecidas strings vazias, indicando dessa forma, que esses produtos devem ser atribuídos diretamente a um departamento e não a um subdepartamento dentro deles.
 Agora vamos implementar as mudanças necessárias para que os produtos possam, cada um deles, indicar também um subdepartamento.
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Substitua as constantes do seguinte trecho:
@@ -515,7 +517,7 @@ Agora vamos implementar as mudanças necessárias para que os produtos possam, c
 ```
 > E execute o novo comando, para substituir a view.
 
-Ao executar o comando, provavelmente ocorrerá um erro, o problema é que, além de campos da tabela produtos (que está indicada na composição da view), estamos também indicando campos da tabela **subgrupos** e nada, até então, faz referência a ela em nossa nova view. Para resolvermos isso temos que incluir um segundo comando JOIN unindo a tabela produtos também com a de subgrupos, o que permitirá que ambém possamos referenciar seus campos no select da view.
+Ao executar o comando, provavelmente ocorrerá um erro, o problema é que, além de campos da tabela produtos (que está indicada na composição da view), estamos também indicando campos da tabela **subgrupos** e nada, até então, faz referência a ela em nossa nova view. Para resolvermos isso temos que incluir um segundo comando JOIN unindo a tabela produtos também com a de subgrupos, o que permitirá que possamos referenciar seus campos no select da view.
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Para corrigir o problema, logo abaixo do trecho da view atual:
 ```sql
@@ -541,7 +543,7 @@ Note que dessa vez, não fizemos como no JOIN anterior, renomeando a tabela subg
 > Com essas mudanças, os valores constantes no campo **pro_fk_subgrupo** de cada produto, são utilizados para indicar a qual linha da tabela **subgrupos** eles correspondem. Agora, com as tabelas devidamente interligadas, valores de ambas podem ser utilizados para composição da view, no caso **sub_c_subgrupo** e **sub_b_ativo** vieram da tabela subgrupos e não da de produtos.
 
 <font color='Orange'>Indicando produtos não industrializados</font>
-Já foi citado anteriormente que produtos indicados como industrializados, têm seu nome e imagens buscados pela plataforma em uma base própria dela, dessa forma pudemos omitir o nome do produto na versão inicial da view, uma vez que ele seria ignorado de qualquer forma. 
+Já foi citado anteriormente que produtos indicados como industrializados, têm seu nome e imagens buscados pela plataforma de uma base dela, dessa forma, pudemos omitir o nome do produto na versão inicial da view, uma vez que ele seria ignorado de qualquer forma. 
 Agora, caso indiquemos em cada produto, se ele é ou não industrializado, os que indicarem esse valor como FALSE (tornando-los digamos "manufaturados"), devem passar também seus nomes para plataforma, pois produtos não industrializados passados sem nome para as apis, resultam em erros.
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Para que possamos indicar para cada produto quais são industrializados e quais não, basta modificar o trecho abaixo da [view](#glossario-views).
@@ -559,9 +561,9 @@ Agora, caso indiquemos em cada produto, se ele é ou não industrializado, os qu
 Como todos campos de tabelas indicados já estão presentes na tabela produtos, que é a tabela base da view, nenhum outro comando JOIN é necessário.
 
 <font color='Orange'>Controlando o estoque dos produtos</font>
-Se você analisar a documentação das apis dos projetos compatíveis com o **ConecSync**, perceberá que ele não possui um valor para indicação de estoque atual do produto (para ser atualizada a cada venda do produto), pois essas apis pretendem ser comunicadas apenas sobre modificações eventuais dos produtos, como modificações de preço, departamentos, status ativo, etc... 
-Entretanto, existe uma flag **estoqueMinimo** relacionada ao controle de estoque nelas, quando esse valor é passado como TRUE, isso quer dizer que o produto se encontra com quantidade crítica de estoque e nesse caso, sua venda online deve ser suspensa, o inverso ocorre caso seu valor seja indicado como FALSE, ou seja, a venda online volta a ser liberada, pois o produto já não se encontra mais com estoque crítico.
-É claro que você poderia controlar isso via api em seu próprio código, entretanto para que a integração seja aprovada, tem que controlar acionamentos às [APIs](#glossario-api) apenas quando esses valores sofrerem modificações (ou seja, não deve acionar a api a cada venda que reduza a quantidade do produto e cuja situação de estoque crítico já tenha sido comunicada em chamadas anteriores, nem quando uma nova entrada de estoque de um produto com estoque regular não tenha entrado no estado crítico nesse cálculo) sob pena da integração ser recusada. Caso queira controlar a flag estoqueMinimo de em seu código, deve solicitar maiores informações à [Conecdata](#glossario-conecdata) da forma correta de fazê-lo, felizmente é muito mais fácil e seguro você controlar o status da venda online dos produtos, usando o **ConecSync** como demostraremos a seguir.
+Se você analisar a documentação das apis dos projetos compatíveis com o **ConecSync**, perceberá que ele não possui um valor para indicação de quantidade de estoque atual do produto (para ser atualizada a cada venda de um produto), pois essas apis pretendem ser comunicadas apenas sobre modificações eventuais dos produtos, como modificações de preço, departamentos, status ativo, etc... 
+Entretanto, existe uma flag **estoqueMinimo** relacionada ao controle de estoque nas apis dos projetos, quando esse valor é passado como TRUE, isso quer dizer que o produto se encontra com quantidade crítica de estoque e nesse caso, sua venda online deve ser suspensa, o inverso ocorre caso seu valor seja indicado como FALSE, ou seja, a venda online volta a ser liberada, pois o produto já não se encontra mais com estoque crítico.
+É claro que você poderia controlar isso via api em seu próprio código, entretanto para que a integração seja aprovada, tem que controlar acionamentos às [APIs](#glossario-api) apenas quando esses valores sofrerem modificações (ou seja, não deve acionar a api a cada venda que reduza a quantidade do produto e cuja situação de estoque crítico já tenha sido comunicada em chamadas anteriores, nem quando uma nova entrada de estoque de um produto com estoque regular não tenha entrado no estado crítico nesse cálculo) sob pena da integração ser recusada. Caso queira controlar a flag estoqueMinimo em seu código, deve solicitar maiores informações à [Conecdata](#glossario-conecdata) da forma correta de fazê-lo, felizmente é muito mais fácil e seguro você controlar o status da venda online dos produtos, usando o **ConecSync** como demostraremos a seguir.
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 >  Seguindo os exemplos anteriores, basta substituir o trecho da view:
 ```sql
@@ -601,7 +603,7 @@ A comunicação para as apis só acontecem, caso algum valor relevante do cadast
 > E executar o novo comando, para substituir a view.
 
 <font color='Orange'>Produtos com limite de quantidade de venda</font>
-Dois campos podem controlar a quantidade disponível para venda online de um produto:
+Dois campos podem controlar a quantidade máxima permitida para venda online de um produto (por pedido):
 * **pro_f_perc_limite_venda** Só é utilizada caso o estoque desse produto seja controlado (campo **pro_b_estoque** em  nosso exemplo). O valor percentual aqui indicado, é calculado sobre o valor do campo **pro_f_qtde_estoque_loja**, gerando o valor limite para venda online desse produto. Vejamos alguns exemplos:
 
 pro_b_estoque|pro_f_perc_limite_venda|pro_f_qtde_estoque_loja|Resultado|Motivo
@@ -609,28 +611,28 @@ pro_b_estoque|pro_f_perc_limite_venda|pro_f_qtde_estoque_loja|Resultado|Motivo
 FALSE|10|200|0 (sem limite)|Se estoque não é controlado, não há limite para venda online
 TRUE|10|200|20 no máx|200 * 10% = 20
 
-* **pro_f_qtde_limite_venda** Indicação direta de valor mínimo para venda online. Caso  **pro_f_perc_limite_venda** resulte em algum valor (> 0), ele é comparado com **pro_f_qtde_limite_venda** e o MENOR deles é repassado para as apis para ser utilizado na limitação da quantidade de venda online do produto.
+* **pro_f_qtde_limite_venda** Indicação direta de valor mínimo para venda online. Caso  **pro_f_perc_limite_venda** resulte em algum valor (> 0), ele é comparado com **pro_f_qtde_limite_venda** e o MENOR deles é repassado para as apis para ser utilizado na limitação da quantidade máxima de venda online desse produto.
 
 
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Para definir um limite para venda online de cada produto baseado no estoque atual, basta substituir o trecho da view:
 ```sql
-    0 AS percentualLimiteVenda
+  0 AS percentualLimiteVenda
 ```
 > Por esse:
 ```sql
-	pro_f_perc_limite_venda AS percentualLimiteVenda
+  pro_f_perc_limite_venda AS percentualLimiteVenda
 ```
 > E executar o novo comando, para substituir a view. Lembre-se que esse valor só tem efeito caso esse produto tenha a flag de estoque controlado habilidada.
 
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Para definir um limite de quantidade de venda fixo para cada produto, basta substituir o trecho da view:
 ```
-    0 AS qtdeLimiteVenda,    
+  0 AS qtdeLimiteVenda,    
 ```
 > Por esse:
 ```
-	pro_f_qtde_limite_venda AS qtdeLimiteVenda,
+  pro_f_qtde_limite_venda AS qtdeLimiteVenda,
 ```
 > E executar o novo comando, para substituir a view.  
 
@@ -640,62 +642,62 @@ O menor desses dois valores (o baseado no percentual e o fixo) será passado par
 > <font color='SteelBlue'> **Acompanhando o exemplo DB**</font>
 > Caso indique um produto como pesável (venda a granel), tem também que indicar dois outros valores, o tipo de sua medida e a fração para seu acréscimo/decréscimo. Basta substituir o trecho da view:
 ```sql
-    0 AS pesavelStatus,
-    0 AS pesavelFracao,
-    '' AS pesavelTipo, 
+  0 AS pesavelStatus,
+  0 AS pesavelFracao,
+  '' AS pesavelTipo, 
 ```
 > Por esse:
 ```sql
-	pro_b_fracionado AS pesavelStatus,
-	pro_f_pesavel_fracao AS pesavelFracao,
-	pro_c_pesavel_tipo AS pesavelTipo,
+  pro_b_fracionado AS pesavelStatus,
+  pro_f_pesavel_fracao AS pesavelFracao,
+  pro_c_pesavel_tipo AS pesavelTipo,
 ```
 >  E executar o novo comando, para substituir a view.
 >  Tipos de unidade de medida válidas: (K)ilograma, (G)rama, (L)itro, (ML) mililitro, (M)etro ou (CM) centímetro.
 
 ***View completa*** Os demais valores não possuem outros relacionados e seus os demais campos que podem substituir suas constantes podem ser observados na versão completa da view produtos abaixo.
 ```sql
-  DROP VIEW IF EXISTS view_conecdata_produtos;
+  DROP VIEW view_conecdata_produtos;
 
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    pro_pk AS idProduto,
-    pro_c_barcode AS barcodeProduto,
-    pro_f_preco AS precoVenda,
+    pro_pk AS id_produto,
+    pro_c_barcode AS barcode_produto,
+    pro_f_preco AS preco_venda,
     
-    pro_fk_grupo AS idDepartamento,
-    gru_c_grupo AS nomeDepartamento,
-    gru_b_ativo AS ativoDepartamento,
+    pro_fk_grupo AS id_departamento,
+    gru_c_grupo AS nome_departamento,
+    gru_b_ativo AS ativo_departamento,
     
-    pro_fk_subgrupo AS idSubdepartamento,
-    sub_c_subgrupo AS nomeSubdepartamento,
-    sub_b_ativo AS ativoSubdepartamento,
+    pro_fk_subgrupo AS id_subdepartamento,
+    sub_c_subgrupo AS nome_subdepartamento,
+    sub_b_ativo AS ativo_subdepartamento,
     
     pro_b_industrializado AS industrializado,
-    pro_c_produto AS nomeProduto,
+    pro_c_produto AS nome_produto,
         
-    pro_b_estoque AS estoqueControlado,
-    pro_f_qtde_estoque_min AS qtdeEstoqueMinimo,
-    pro_f_qtde_estoque_loja AS qtdeEstoqueAtual,
+    pro_b_estoque AS estoque_controlado,
+    pro_f_qtde_estoque_min AS qtde_estoque_minimo,
+    pro_f_qtde_estoque_loja AS qtde_estoque_atual,
     
-    pro_f_qtde_atacado AS atacadoQtde,
-    pro_f_valor_atacado AS atacadoValor,
+    pro_f_qtde_atacado AS atacado_qtde,
+    pro_f_valor_atacado AS atacado_valor,
     
-    pro_f_perc_limite_venda AS percentualLimiteVenda,
-    pro_f_qtde_limite_venda AS qtdeLimiteVenda,    
+    pro_f_perc_limite_venda AS percentual_limite_venda,
+    pro_f_qtde_limite_venda AS qtde_limite_venda,
   
-    pro_b_fracionado AS pesavelStatus,
-    pro_f_pesavel_fracao AS pesavelFracao,
-    pro_c_pesavel_tipo AS pesavelTipo,
+    pro_b_fracionado AS pesavel_status,
+    pro_f_pesavel_fracao AS pesavel_fracao,
+    pro_c_pesavel_tipo AS pesavel_tipo,
     
-    pro_b_ativo AS produtoAtivo,
+    pro_b_ativo AS produto_ativo,
    
-    pro_c_descricao AS descricaoProduto,
+    pro_c_descricao AS descricao_produto,
 
     pro_b_destaque AS destaque,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
@@ -732,15 +734,15 @@ Uma visão reduzida da view dessas tabelas também reduzidas ficaria mais ou men
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    id AS idProduto,
-    produto AS nomeProduto,
-    ativo AS produtoAtivo,
+    id AS id_produto,
+    produto AS nome_produto,
+    ativo AS produto_ativo,
         
-    id AS idDepartamento,
-    nome AS nomeDepartamento,
-    ativo AS ativoDepartamento,
+    id AS id_departamento,
+    nome AS nome_departamento,
+    ativo AS ativo_departamento,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
@@ -753,21 +755,21 @@ Esse comando é claramente confuso, uma vez que a maioria dos campos das duas ta
   CREATE VIEW
     view_conecdata_produtos
   AS SELECT
-    produtos.id AS idProduto,
-    produtos.produto AS nomeProduto,
-    produtos.ativo AS produtoAtivo,
+    produtos.id AS id_produto,
+    produtos.produto AS nome_produto,
+    produtos.ativo AS produto_ativo,
         
-    grupos.id AS idDepartamento,
-    grupos.nome AS nomeDepartamento,
-    grupos.ativo AS ativoDepartamento,
+    grupos.id AS id_departamento,
+    grupos.nome AS nome_departamento,
+    grupos.ativo AS ativo_departamento,
     
-    '1' AS idLoja
+    1 AS id_loja
   FROM
     produtos
   LEFT JOIN
     grupos ON idGrupo = produtos.id;
 ```
-Note que todas as vezes que os nomes dos campos conflitaram entre alguma das tabelas componentes da view, foram prefixados pelo nome da tabela para eliminar qualquer confusão.
+Note que todas as vezes que os nomes dos campos conflitaram entre alguma das tabelas utilizadas na view, foram prefixados pelo nome da tabela para eliminar qualquer confusão.
 
 #### view_conecdata_estoque<a id="integracao-exemplo-criando-views-estoque"></a>
 A [view](#glossario-view) de estoque é uma versão extremamente simplificada da produtos e só deve ser utilizada em sua ausência na integração via **ConecSync** (uma vez que a view produtos além de sincronizar os produtos, já sincroniza seu estoque também). Caso tanto a integração de produtos quanto a de estoque seja configurada, a de produtos será executada e a de estoque ignorada.

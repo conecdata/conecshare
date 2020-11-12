@@ -16,7 +16,7 @@ export const CONFIG = {
     },
   },
   csv: {
-    path: 'D:\\conecdata\\produtos\\conecsync\\src\\assets'
+    path: ''
   },
   /* 
     TRUE = plataforma de testes

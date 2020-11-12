@@ -5,11 +5,11 @@ export const CONFIG_PRODUTOS = {
   tipo: '', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
-  nomeView: 'view_conecdata_produtos', // db
+  nomeView: '', // db
 }
 
 // VERSÃO SIMPLIFICADA
-/*
+/* 
   DROP VIEW IF EXISTS view_conecdata_produtos;
 
   CREATE VIEW
@@ -58,7 +58,7 @@ export const CONFIG_PRODUTOS = {
 */
 
 //  VERSÃO COMPLETA
-/* 
+/* Mysql
   DROP VIEW view_conecdata_produtos;
 
   CREATE VIEW

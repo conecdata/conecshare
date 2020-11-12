@@ -2,13 +2,13 @@
 export const CONFIG_FORMAS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'db', // 'db' | 'csv' | ''
+  tipo: '', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de formas pgto
-  nomeView: 'view_conecdata_formas', // db
+  nomeView: '', // db
 }
 
-/*
+/* Mysql
   DROP VIEW IF EXISTS view_conecdata_formas;
 
   CREATE VIEW

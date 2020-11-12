@@ -2,13 +2,13 @@
 export const CONFIG_ESTOQUE = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'db', // 'db' | 'csv' | ''
+  tipo: '', // 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
-  nomeView: 'view_conecdata_estoque', // db
+  nomeView: '', // db
 }
 
-/*
+/* Mysql
   DROP VIEW IF EXISTS view_conecdata_estoque;
 
   CREATE VIEW
