@@ -1,19 +1,24 @@
 export const CONFIG = {
   db: {
     conexao: {
-      host: '45.178.225.94',
-      tabela: 'conecsync2',
-      usuario: 'cdatadb',
-      senha: 'datapass@2',
+      host: '127.0.0.1',
+      tabela: 'conecsync',
+      usuario: 'root',
+      senha: 'senhasecreta',
       tipo: 'postgres', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
-      /*
-      $ npm install --save pg pg-hstore # Postgres
-      $ npm install --save mysql2
-      $ npm install --save mariadb
-      $ npm install --save sqlite3
-      $ npm install --save tedious # Microsoft SQL Server
-      */
-    },
+    }
+  },
+  fb: { // Firebird
+    conexao: {
+      host: '127.0.0.1',
+      port: 3050,
+      database: 'D:\\CONECSYNC.FDB',
+      user: 'SYSDBA',
+      password: 'masterkey',
+      lowercase_keys: false,
+      role: null,
+      pageSize: 4096
+    }
   },
   csv: {
     path: ''

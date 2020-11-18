@@ -12,6 +12,7 @@ export async function syncDepartamentos(
     departamentos: any[]
 ): Promise<number> {
     let count: number = 0;
+    console.log('DEPARTAMENTOS:', departamentos);
 
     if (
         idLoja
@@ -29,7 +30,7 @@ export async function syncDepartamentos(
         for (let i = 0; i < departamentos.length; i++) {
             const BODY_DEPARTAMENTO = departamentos[i];
             const ID_DEPARTAMENTO: string = get(BODY_DEPARTAMENTO, '_id');
-            // console.log(BODY_DEPARTAMENTO);
+            console.log('BODY_DEPARTAMENTO: ', BODY_DEPARTAMENTO);
             try {
                 count += await findOne(
                     NeDB_departamentos,

@@ -9,6 +9,7 @@ import { CONFIG_ESTOQUE } from '../config/origens/config-estoque';
 import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { get } from 'lodash';
 var Datastore = require('nedb');
+var Firebird = require('node-firebird');
 
 export async function processaEstoqueLoja(
   idLoja: string,
@@ -70,6 +71,48 @@ export async function buscaEstoqueDB(
   } else {
     return [];
   } // else
+}
+
+export async function buscaEstoqueFB(idLoja: string) {
+  return new Promise((resolve, reject) => {
+    if (Firebird) {
+      try {
+        Firebird.attach(
+          CONFIG.fb.conexao,
+          function (err, db) {
+            if (err) throw err;
+            // console.log(db);
+            if (db) {
+              const SQL: string = `
+                SELECT 
+                  * 
+                FROM 
+                  ${CONFIG_ESTOQUE.nomeView} 
+                WHERE
+                  id_loja = ${idLoja}
+                `;
+              // console.log(SQL);
+              db.query(SQL,
+                function (err, result) {
+                  // IMPORTANT: close the connection
+                  // console.log(result);
+                  db.detach();
+                  resolve(result);
+                  return;
+                }
+              );
+            } // if
+          });
+      } catch (error) {
+        errorLog(error.message);
+        reject(error);
+        return;
+      } // try-catch
+    } else {
+      resolve([]);
+      return;
+    } // else
+  });
 }
 
 export async function syncEstoque(

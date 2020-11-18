@@ -1,5 +1,9 @@
 import * as rp from 'request-promise';
-import { errorLog, log } from './lib';
+import {
+  chkBool,
+  errorLog,
+  log
+} from './lib';
 import {
   API_URL,
   CAMPOS_FORMAS
@@ -10,6 +14,7 @@ import { CONFIG_MERCADEIRO } from '../config/projetos/config-mercadeiro';
 import { CONFIG_FORMAS } from '../config/origens/config-formas-pgto';
 var hash = require('object-hash');
 var Datastore = require('nedb');
+var Firebird = require('node-firebird');
 
 export async function processaFormasLoja(
   idLoja: string,
@@ -71,6 +76,48 @@ export async function buscaFormasDB(
   } else {
     return [];
   } // else
+}
+
+export async function buscaFormasFB(idLoja: string) {
+  return new Promise((resolve, reject) => {
+    if (Firebird) {
+      try {
+        Firebird.attach(
+          CONFIG.fb.conexao,
+          function (err, db) {
+            if (err) throw err;
+            // console.log(db);
+            if (db) {
+              const SQL: string = `
+                SELECT 
+                  * 
+                FROM 
+                  ${CONFIG_FORMAS.nomeView} 
+                WHERE
+                  id_loja = ${idLoja}
+                `;
+              // console.log(SQL);
+              db.query(SQL,
+                function (err, result) {
+                  // IMPORTANT: close the connection
+                  // console.log(result);
+                  db.detach();
+                  resolve(result);
+                  return;
+                }
+              );
+            } // if
+          });
+      } catch (error) {
+        errorLog(error.message);
+        reject(error);
+        return;
+      } // try-catch
+    } else {
+      resolve([]);
+      return;
+    } // else
+  });
 }
 
 export async function syncFormas(
@@ -158,7 +205,7 @@ function findOne(
     const ID_FORMA: string = get(forma, 'id_interno') || '';
     // console.log(ID_FORMA);
     const BODY_FORMA = {
-      "ativo": !!get(forma, 'forma_ativa', true),
+      "ativo": chkBool(get(forma, 'forma_ativa', true)),
       "nossoId": get(forma, 'id_externo') || ''
     };
     // console.log(BODY_FORMA);

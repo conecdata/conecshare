@@ -2,14 +2,14 @@
 export const CONFIG_PRODUTOS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: '', // 'db' | 'csv' | ''
+  tipo: 'fb', // 'fb', 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
-  nomeView: '', // db
+  nomeView: 'view_conecdata_produtos', // db/fb
 }
 
 // VERSÃO SIMPLIFICADA
-/* 
+/* Mysql
   DROP VIEW IF EXISTS view_conecdata_produtos;
 
   CREATE VIEW
@@ -107,3 +107,113 @@ export const CONFIG_PRODUTOS = {
   LEFT JOIN
     subgrupos AS subdepartamentos ON produtos.pro_fk_subgrupo = subdepartamentos.sub_pk
 */
+
+/* Firebird
+
+DROP VIEW view_conecdata_produtos;
+
+CREATE VIEW view_conecdata_produtos
+  (
+    id_produto,
+    barcode_produto,
+    preco_venda,
+
+    id_departamento,
+    nome_departamento,
+    ativo_departamento,
+
+    id_subdepartamento,
+    nome_subdepartamento,
+    ativo_subdepartamento,
+
+    industrializado,
+    nome_produto,
+        
+    estoque_controlado,
+    qtde_estoque_minimo,
+    qtde_estoque_atual,
+
+    atacado_qtde,
+    atacado_valor,
+
+    percentual_limite_venda,
+    qtde_limite_venda,
+
+    pesavel_status,
+    pesavel_fracao,
+    pesavel_tipo,
+
+    produto_ativo,
+
+    descricao_produto,
+
+    destaque,
+
+    id_loja
+  ) 
+AS SELECT
+  pro_pk,
+  pro_c_barcode,
+  pro_f_preco,
+
+  pro_fk_grupo,
+  gru_c_grupo,
+  gru_b_ativo,
+
+  pro_fk_subgrupo,
+  sub_c_subgrupo,
+  sub_b_ativo,
+  
+  pro_b_industrializado,
+  pro_c_produto,
+      
+  pro_b_estoque,
+  pro_f_qtde_estoque_min,
+  pro_f_qtde_estoque_loja,
+  
+  pro_f_qtde_atacado,
+  pro_f_valor_atacado,
+  
+  pro_f_perc_limite_venda,
+  pro_f_qtde_limite_venda,
+
+  pro_b_fracionado,
+  pro_f_pesavel_fracao,
+  pro_c_pesavel_tipo,
+  
+  pro_b_ativo,
+  
+  pro_c_descricao,
+
+  pro_b_destaque,
+  
+  1
+FROM 
+  produtos
+LEFT JOIN
+  grupos AS departamentos ON produtos.pro_fk_grupo = departamentos.gru_pk
+LEFT JOIN
+  subgrupos AS subdepartamentos ON produtos.pro_fk_subgrupo = subdepartamentos.sub_pk
+;
+
+CREATE VIEW view_conecdata_produtos(
+    ID,
+    CATEGORY_ID,
+    TITLE,
+    ACTOR,
+    PRICE,
+    SPECIAL,
+    STOCK)
+AS
+select
+    id,
+    category_id,
+    title,
+    actor,
+    price,
+    special,
+    (select sum(inventory.quan_in_stock) from inventory where inventory.product_id=product.id)
+from product
+;
+
+*/ 

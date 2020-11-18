@@ -5,14 +5,17 @@ const { Sequelize } = require('sequelize');
 import { errorLog, log } from './inc/lib';
 import {
   buscaProdutosDB,
+  buscaProdutosFB,
   processaProdutosLoja
 } from './inc/produtos';
 import {
   buscaFormasDB,
+  buscaFormasFB,
   processaFormasLoja
 } from './inc/formas-pgto';
 import {
   buscaEstoqueDB,
+  buscaEstoqueFB,
   processaEstoqueLoja
 } from './inc/estoque';
 import {
@@ -20,6 +23,7 @@ import {
   FORMAS_REQ_FIELDS,
   PRODUTOS_REQ_FIELDS
 } from './consts';
+var Firebird = require('node-firebird');
 
 // config
 import { CONFIG } from './config/config';
@@ -90,7 +94,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
       log('Nenhuma integração csv encontrada');
     } // else
 
-    log('Verificando configurações de conexão com banco de dados.');
+    log('Verificando configurações de conexão db.');
     if ( // Alguma conexão com db?
       CONFIG_PRODUTOS.tipo.toLowerCase() === 'db'
       || CONFIG_FORMAS.tipo.toLowerCase() === 'db'
@@ -125,7 +129,47 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
         } // try-catch
       } // else
     } else {
-      log('OBS: Nenhuma integração com banco de dados indicada.');
+      log('OBS: Nenhuma integração db indicada.');
+    } // else
+
+    log('Verificando configurações de conexão fb (Firebird).');
+    if (
+      CONFIG_PRODUTOS.tipo.toLowerCase() === 'fb'
+      || CONFIG_FORMAS.tipo.toLowerCase() === 'fb'
+      || CONFIG_ESTOQUE.tipo.toLowerCase() === 'fb'
+    ) {
+      // Erros de conexão com FB?
+      if (
+        !CONFIG.fb.conexao.host
+        || !CONFIG.fb.conexao.port
+        || !CONFIG.fb.conexao.database
+        || !CONFIG.fb.conexao.user
+        || !CONFIG.fb.conexao.password
+      ) {
+        throw new Error('Configurações de conexão insuficientes em: config/config.ts: fb.conexao');
+      } else {
+        try {
+          // console.log(CONFIG.fb.conexao);
+          Firebird.attach(
+            CONFIG.fb.conexao,
+            function (err, db) {
+              if (err) throw err;
+              // console.log(db);
+              if (!db) {
+                throw new Error('Erro conectando com Firebird: config/config.ts: fb.conexao');
+              } else {
+                db.detach();
+              } // else
+            });
+
+          // await sequelize.authenticate();
+          // log('Conexão com banco de dados estabelecida com sucesso.');
+        } catch (error) {
+          throw new Error(`Falha de conexão com Firebird: ${error.message}`);
+        } // try-catch
+      } // else
+    } else {
+      log('OBS: Nenhuma integração com Firebird indicada.');
     } // else
 
     /* PRODUTOS */
@@ -134,10 +178,10 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
     log('Verificando integração PRODUTOS.');
     if (TIPO_PRODUTOS) {
       const LOJAS_MERCADEIRO: any[] = get(CONFIG_MERCADEIRO, 'lojas') || [];
+      const VIEW_PRODUTOS: string = get(CONFIG_PRODUTOS, 'nomeView') || '';
 
       switch (TIPO_PRODUTOS) {
         case 'db':
-          const VIEW_PRODUTOS: string = get(CONFIG_PRODUTOS, 'nomeView') || '';
           log('Encontrado: ' + VIEW_PRODUTOS);
           // console.log(CAMPOS_PRODUTOS);
           for (const LOJA of LOJAS_MERCADEIRO) {
@@ -145,7 +189,7 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
             const ID_LOJA: string = `${get(LOJA, 'id') || ''}`;
 
             try {
-              const PRODUTOS = (await buscaProdutosDB(
+              const PRODUTOS: any = (await buscaProdutosDB(
                 sequelize,
                 ID_LOJA
               ))
@@ -158,6 +202,50 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                   PRODUTOS
                 )
               };
+            } catch (error) {
+              errorLog(`Loja ${ID_LOJA}: ${error.message}`);
+            } // try-catch
+          } // for
+          break;
+
+        case 'fb':
+          log('Encontrado: ' + VIEW_PRODUTOS);
+          // console.log(CAMPOS_PRODUTOS);
+          for (const LOJA of LOJAS_MERCADEIRO) {
+            // console.log(LOJA);
+            const ID_LOJA: string = `${get(LOJA, 'id') || ''}`;
+            console.log('ID_LOJA:', ID_LOJA);
+
+            try {
+              const PRODUTOS: any = (await buscaProdutosFB(ID_LOJA));
+              // console.log(PRODUTOS);
+
+              // Object.Keys.toLowercase() && Object.values.trim()
+              let produtos: any[] = [];
+              PRODUTOS.forEach(p => {
+                // let o: any = 
+                const obj: any = {};
+                Object.entries(p)
+                  .forEach((e: any) => {
+                    // console.log(e);
+                    const [K, V] = e;
+                    // console.log(K, V);
+                    obj[K.toLowerCase()] = typeof V === 'string'
+                      ? (V || '').trim()
+                      : (typeof V === 'number' ? V : V || '');
+                  });
+                produtos.push(obj);
+              });
+              // console.log(produtos);
+
+              resultado = {
+                ...resultado,
+                ...await processaProdutosLoja(
+                  ID_LOJA,
+                  produtos
+                )
+              };
+              // console.log(resultado);
             } catch (error) {
               errorLog(`Loja ${ID_LOJA}: ${error.message}`);
             } // try-catch
@@ -393,11 +481,11 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
     log('Verificando integração FORMAS PGTO.');
     if (TIPO_FORMAS) {
       const LOJAS_MERCADEIRO: any[] = get(CONFIG_MERCADEIRO, 'lojas') || [];
+      const VIEW_FORMAS: string = get(CONFIG_FORMAS, 'nomeView') || '';
 
       // console.log(TIPO_FORMAS);
       switch (TIPO_FORMAS) {
         case 'db':
-          const VIEW_FORMAS: string = get(CONFIG_FORMAS, 'nomeView') || '';
           log('Encontrado: ' + VIEW_FORMAS);
 
           for (const LOJA of LOJAS_MERCADEIRO) {
@@ -416,6 +504,46 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                 ...await processaFormasLoja(
                   ID_LOJA,
                   FORMAS
+                )
+              };
+            } catch (error) {
+              errorLog(`Loja ${ID_LOJA}: ${error.message}`);
+            } // try-catch
+          } // for
+          break;
+
+        case 'fb':
+          log('Encontrado: ' + VIEW_FORMAS);
+          for (const LOJA of LOJAS_MERCADEIRO) {
+            // console.log(LOJA);
+            const ID_LOJA: string = `${get(LOJA, 'id') || ''}`;
+
+            try {
+              const FORMAS: any = (await buscaFormasFB(ID_LOJA));
+
+              // Object.Keys.toLowercase() && Object.values.trim()
+              let formas: any[] = [];
+              FORMAS.forEach(f => {
+                // let o: any = 
+                const obj: any = {};
+                Object.entries(f)
+                  .forEach((e: any) => {
+                    // console.log(e);
+                    const [K, V] = e;
+                    // console.log(K, V);
+                    obj[K.toLowerCase()] = typeof V === 'string'
+                      ? (V || '').trim()
+                      : (typeof V === 'number' ? V : V || '');
+                  });
+                formas.push(obj);
+              });
+              // console.log(formas);
+
+              resultado = {
+                ...resultado,
+                ...await processaFormasLoja(
+                  ID_LOJA,
+                  formas
                 )
               };
             } catch (error) {
@@ -575,11 +703,11 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
     log('Verificando integração ESTOQUE.');
     if (tipoEstoque) {
       const LOJAS_MERCADEIRO: any[] = get(CONFIG_MERCADEIRO, 'lojas') || [];
+      const VIEW_ESTOQUE: string = get(CONFIG_ESTOQUE, 'nomeView') || '';
 
       switch (tipoEstoque) {
         case 'db':
-          const VIEW_FORMAS: string = get(CONFIG_FORMAS, 'nomeView') || '';
-          log('Encontrado: ' + VIEW_FORMAS);
+          log('Encontrado: ' + VIEW_ESTOQUE);
           // console.log(CAMPOS_ESTOQUE);
 
           for (const LOJA of LOJAS_MERCADEIRO) {
@@ -598,6 +726,48 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                 ...await processaEstoqueLoja(
                   ID_LOJA,
                   ESTOQUE
+                )
+              };
+            } catch (error) {
+              errorLog(`Loja ${ID_LOJA}: ${error.message}`);
+            } // try-catch
+          } // for
+          break;
+
+        case 'fb':
+          log('Encontrado: ' + VIEW_ESTOQUE);
+          // console.log(CAMPOS_ESTOQUE);
+
+          for (const LOJA of LOJAS_MERCADEIRO) {
+            // console.log(LOJA);
+            const ID_LOJA: string = `${get(LOJA, 'id') || ''}`;
+
+            try {
+              const ESTOQUE: any = (await buscaEstoqueFB(ID_LOJA));
+
+              // Object.Keys.toLowercase() && Object.values.trim()
+              let estoque: any[] = [];
+              ESTOQUE.forEach(p => {
+                // let o: any = 
+                const obj: any = {};
+                Object.entries(p)
+                  .forEach((e: any) => {
+                    // console.log(e);
+                    const [K, V] = e;
+                    // console.log(K, V);
+                    obj[K.toLowerCase()] = typeof V === 'string'
+                      ? (V || '').trim()
+                      : (typeof V === 'number' ? V : V || '');
+                  });
+                estoque.push(obj);
+              });
+              // console.log(produtos);
+
+              resultado = {
+                ...resultado,
+                ...await processaEstoqueLoja(
+                  ID_LOJA,
+                  estoque
                 )
               };
             } catch (error) {

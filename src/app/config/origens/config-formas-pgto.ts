@@ -2,10 +2,10 @@
 export const CONFIG_FORMAS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: '', // 'db' | 'csv' | ''
+  tipo: '', // 'fb', 'db' | 'csv' | ''
 
   // Nome da view do cadastro de formas pgto
-  nomeView: '', // db
+  nomeView: '', // db/fb
 }
 
 /* Mysql

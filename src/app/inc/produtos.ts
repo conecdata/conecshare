@@ -1,5 +1,9 @@
 import * as rp from 'request-promise';
-import { errorLog, log } from './lib';
+import {
+  chkBool,
+  errorLog,
+  log
+} from './lib';
 import { API_URL, CAMPOS_PRODUTOS } from '../consts';
 import { CONFIG_PRODUTOS } from '../config/origens/config-produtos';
 import { CONFIG } from '../config/config';
@@ -12,6 +16,7 @@ import { syncDepartamentos } from './departamentos';
 import { syncSubdepartamentos } from './subdepartamentos';
 var hash = require('object-hash');
 var Datastore = require('nedb');
+var Firebird = require('node-firebird');
 
 export async function processaProdutosLoja(
   idLoja: string,
@@ -33,10 +38,13 @@ export async function processaProdutosLoja(
   };
 
   try {
+    // console.log(produtos);
     const {
       departamentos: DEPARTAMENTOS,
       subdepartamentos: SUBDEPARTAMENTOS
     } = buscaDepartamentosSubdepartamentos(produtos);
+    console.log(DEPARTAMENTOS);
+    // console.log(SUBDEPARTAMENTOS);
 
     log(`${DEPARTAMENTOS.length} departamento(s) encontrado(s).`);
     RESULTADO.departamentos.total = DEPARTAMENTOS.length || 0;
@@ -103,6 +111,48 @@ export async function buscaProdutosDB(
   } // else
 }
 
+export async function buscaProdutosFB(idLoja: string) {
+  return new Promise((resolve, reject) => {
+    if (Firebird) {
+      try {
+        Firebird.attach(
+          CONFIG.fb.conexao,
+          function (err, db) {
+            if (err) throw err;
+            // console.log(db);
+            if (db) {
+              const SQL: string = `
+                SELECT 
+                  * 
+                FROM 
+                  ${CONFIG_PRODUTOS.nomeView} 
+                WHERE
+                  id_loja = ${idLoja}
+                `;
+              // console.log(SQL);
+              db.query(SQL,
+                function (err, result) {
+                  // IMPORTANT: close the connection
+                  // console.log(result);
+                  db.detach();
+                  resolve(result);
+                  return;
+                }
+              );
+            } // if
+          });
+      } catch (error) {
+        errorLog(error.message);
+        reject(error);
+        return;
+      } // try-catch
+    } else {
+      resolve([]);
+      return;
+    } // else
+  });
+}
+
 export function buscaDepartamentosSubdepartamentos(produtos: any[]): {
   departamentos: any[];
   subdepartamentos: any[];
@@ -120,7 +170,7 @@ export function buscaDepartamentosSubdepartamentos(produtos: any[]): {
     // Gera lista de departamentos dos produtos.
     RETORNO.departamentos.push({
       _id: `${get(produtos[i], 'id_departamento') || ''}`,
-      ativo: !!get(produtos[i], 'ativo_departamento'),
+      ativo: chkBool(get(produtos[i], 'ativo_departamento')),
       nome: get(produtos[i], 'nome_departamento') || ''
     });
 
@@ -130,7 +180,7 @@ export function buscaDepartamentosSubdepartamentos(produtos: any[]): {
       RETORNO.subdepartamentos.push({
         _id: `${get(produtos[i], 'id_subdepartamento') || ''}`,
         idDepartamento: `${get(produtos[i], 'id_departamento') || ''}`,
-        ativo: !!get(produtos[i], 'ativo_subdepartamento'),
+        ativo: chkBool(get(produtos[i], 'ativo_subdepartamento')),
         nome: get(produtos[i], 'nome_subdepartamento') || ''
       });
     } // if
@@ -230,7 +280,7 @@ function findOne(
     const ID_PRODUTO: string = get(produto, 'id_produto') || '';
     // console.log(ID_PRODUTO);
     const ESTOQUE = {
-      controlado: !!get(produto, 'estoque_controlado'),
+      controlado: chkBool(get(produto, 'estoque_controlado')),
       min: parseFloat(get(produto, 'qtde_estoque_minimo')) || 0,
       atual: parseFloat(get(produto, 'qtde_estoque_atual')) || 0
     };
@@ -251,12 +301,13 @@ function findOne(
           : LIMITE_VENDA.qtde
       )
       : VAL_PERCENTUAL;
+    // console.log(produto);
     const BODY_PRODUTO = {
       "atacado": {
         "qtde": parseFloat(get(produto, 'atacado_qtde')) || 0,
         "valor": parseFloat(get(produto, 'atacado_valor')) || 0,
       },
-      "ativo": !!get(produto, 'produto_ativo', true),
+      "ativo": chkBool(get(produto, 'produto_ativo', true)),
       "barcode": get(produto, 'barcode_produto') || '',
       "descricao": get(produto, 'descricao_produto') || '',
       "estoqueMinimo": ESTOQUE.controlado && ESTOQUE.min
@@ -264,10 +315,10 @@ function findOne(
         : false,
       "idDepartamento": get(produto, 'id_departamento') || '',
       "idSubdepartamento": get(produto, 'id_subdepartamento') || '',
-      "industrializado": !!get(produto, 'industrializado', true),
+      "industrializado": chkBool(get(produto, 'industrializado', true)),
       "limiteVenda": LIMITE_VENDA.menorValor,
       "pesavel": {
-        "status": !!get(produto, 'pesavel_status', false),
+        "status": chkBool(get(produto, 'pesavel_status', false)),
         "unidade": {
           "fracao": parseFloat(get(produto, 'pesavel_fracao')) || 0,
           "tipo": get(produto, 'pesavel_tipo') || ''
@@ -275,9 +326,9 @@ function findOne(
       },
       "nome": get(produto, 'nome_produto') || '',
       "preco": parseFloat(get(produto, 'preco_venda')) || 0,
-      "destaque": !!get(produto, 'destaque', false)
+      "destaque": chkBool(get(produto, 'destaque', false))
     };
-    // console.log(BODY_PRODUTO);
+    console.log(BODY_PRODUTO);
     const HASH_PRODUTO: string = hash(BODY_PRODUTO);
     // console.log(HASH_PRODUTO);
 

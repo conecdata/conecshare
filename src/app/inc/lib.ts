@@ -20,3 +20,23 @@ export function errorLog(msg: string) {
   });
   CONFIG.verbose && console.log('\x1b[31m', `${TS} ERRO: ${msg}`, '\x1b[0m');
 }
+
+export function chkBool(val: any): boolean {
+  switch (typeof val) {
+    case 'boolean':
+      return !!val;
+      break;
+
+    case 'number':
+      return val > 0;
+      break;
+
+    case 'string':
+      return ['S', 'T', '1'].includes(val.trim().toUpperCase());
+      break;
+
+    default:
+      return false;
+      break;
+  }
+}
