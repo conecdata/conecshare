@@ -12,7 +12,7 @@ export const CONFIG = {
     conexao: {
       host: '127.0.0.1',
       port: 3050,
-      database: 'D:\\CONECSYNC.FDB',
+      database: 'D:\\TGA_varejao.FDB', // 'D:\\TGA_varejao.FDB' 'D:\\CONECSYNC.FDB'
       user: 'SYSDBA',
       password: 'masterkey',
       lowercase_keys: false,

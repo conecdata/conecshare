@@ -2,6 +2,7 @@ import * as rp from 'request-promise';
 import {
   chkBool,
   errorLog,
+  fixBuffStr,
   log
 } from './lib';
 import { API_URL, CAMPOS_PRODUTOS } from '../consts';
@@ -134,6 +135,25 @@ export async function buscaProdutosFB(idLoja: string) {
                 function (err, result) {
                   // IMPORTANT: close the connection
                   // console.log(result);
+                  result.forEach((row) => {
+                    row.ID_PRODUTO = fixBuffStr(row.ID_PRODUTO);
+                    row.BARCODE_PRODUTO = fixBuffStr(row.BARCODE_PRODUTO);
+                    row.NOME_PRODUTO = fixBuffStr(row.NOME_PRODUTO);
+                    row.ID_DEPARTAMENTO = fixBuffStr(row.ID_DEPARTAMENTO);
+                    row.NOME_DEPARTAMENTO = fixBuffStr(row.NOME_DEPARTAMENTO);
+                    row.ATIVO_DEPARTAMENTO = fixBuffStr(row.ATIVO_DEPARTAMENTO);
+                    row.ID_SUBDEPARTAMENTO = fixBuffStr(row.ID_SUBDEPARTAMENTO);
+                    row.NOME_SUBDEPARTAMENTO = fixBuffStr(row.NOME_SUBDEPARTAMENTO);
+                    row.ATIVO_SUBDEPARTAMENTO = fixBuffStr(row.ATIVO_SUBDEPARTAMENTO);
+                    row.INDUSTRIALIZADO = fixBuffStr(row.INDUSTRIALIZADO);
+                    row.ESTOQUE_CONTROLADO = fixBuffStr(row.ESTOQUE_CONTROLADO);
+                    row.PESAVEL_STATUS = fixBuffStr(row.PESAVEL_STATUS);
+                    row.PESAVEL_TIPO = fixBuffStr(row.PESAVEL_TIPO);
+                    row.PRODUTO_ATIVO = fixBuffStr(row.PRODUTO_ATIVO);
+                    row.DESCRICAO_PRODUTO = fixBuffStr(row.DESCRICAO_PRODUTO);
+                    row.DESTAQUE = fixBuffStr(row.DESTAQUE);
+                    row.ID_LOJA = fixBuffStr(row.ID_LOJA);
+                  });
                   db.detach();
                   resolve(result);
                   return;
