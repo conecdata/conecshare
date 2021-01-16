@@ -142,6 +142,7 @@ export async function buscaProdutosFB(idLoja: string) {
                     row.ID_DEPARTAMENTO = fixBuffStr(row.ID_DEPARTAMENTO);
                     row.NOME_DEPARTAMENTO = fixBuffStr(row.NOME_DEPARTAMENTO);
                     row.ATIVO_DEPARTAMENTO = fixBuffStr(row.ATIVO_DEPARTAMENTO);
+                    row.ONLINE_DEPARTAMENTO = fixBuffStr(row.ONLINE_DEPARTAMENTO);
                     row.ID_SUBDEPARTAMENTO = fixBuffStr(row.ID_SUBDEPARTAMENTO);
                     row.NOME_SUBDEPARTAMENTO = fixBuffStr(row.NOME_SUBDEPARTAMENTO);
                     row.ATIVO_SUBDEPARTAMENTO = fixBuffStr(row.ATIVO_SUBDEPARTAMENTO);
@@ -149,7 +150,8 @@ export async function buscaProdutosFB(idLoja: string) {
                     row.ESTOQUE_CONTROLADO = fixBuffStr(row.ESTOQUE_CONTROLADO);
                     row.PESAVEL_STATUS = fixBuffStr(row.PESAVEL_STATUS);
                     row.PESAVEL_TIPO = fixBuffStr(row.PESAVEL_TIPO);
-                    row.PRODUTO_ATIVO = fixBuffStr(row.PRODUTO_ATIVO);
+                    row.ATIVO_PRODUTO = fixBuffStr(row.ATIVO_PRODUTO);
+                    row.ONLINE_PRODUTO = fixBuffStr(row.ONLINE_PRODUTO);
                     row.DESCRICAO_PRODUTO = fixBuffStr(row.DESCRICAO_PRODUTO);
                     row.DESTAQUE = fixBuffStr(row.DESTAQUE);
                     row.ID_LOJA = fixBuffStr(row.ID_LOJA);
@@ -327,7 +329,8 @@ function findOne(
         "qtde": parseFloat(get(produto, 'atacado_qtde')) || 0,
         "valor": parseFloat(get(produto, 'atacado_valor')) || 0,
       },
-      "ativo": chkBool(get(produto, 'produto_ativo', true)),
+      "ativo": chkBool(get(produto, 'ativo_produto', true)),
+      "online": chkBool(get(produto, 'online_produto', true)),
       "barcode": get(produto, 'barcode_produto') || '',
       "descricao": get(produto, 'descricao_produto') || '',
       "estoqueMinimo": ESTOQUE.controlado && ESTOQUE.min

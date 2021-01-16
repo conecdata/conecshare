@@ -280,11 +280,13 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
               pesavel_status: -1,
               pesavel_tipo: -1,
               preco_venda: -1,
-              produto_ativo: -1,
+              ativo_produto: -1,
               qtde_estoque_atual: -1,
               qtde_estoque_minimo: -1,
               qtde_limite_venda: -1,
               destaque: -1,
+              online_departamento: -1,
+              online_produto: -1,
             };
             if (EXTENSION !== '.csv') {
               errorLog('Formato inválido. Apenas arquivos .csv são aceitos: config/config.ts: csv.path/produtos/{idLoja}.csv');
@@ -410,8 +412,11 @@ import { CONFIG_ESTOQUE } from './config/origens/config-estoque';
                       'ativo_subdepartamento': FIELDPOS['ativo_subdepartamento'] >= 0
                         && parseInt(ROW[FIELDPOS['ativo_subdepartamento']] || '') > 0,
 
-                      'produto_ativo': FIELDPOS['produto_ativo'] >= 0
-                        && parseInt(ROW[FIELDPOS['produto_ativo']] || '') > 0,
+                      'ativo_produto': FIELDPOS['ativo_produto'] >= 0
+                        && parseInt(ROW[FIELDPOS['ativo_produto']] || '') > 0,
+
+                      'online': FIELDPOS['online'] >= 0
+                        && parseInt(ROW[FIELDPOS['online']] || '') > 0,
 
                       'pesavel_status': FIELDPOS['pesavel_status'] >= 0
                         && parseInt(ROW[FIELDPOS['pesavel_status']] || '') > 0,

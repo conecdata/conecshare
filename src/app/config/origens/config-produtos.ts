@@ -2,7 +2,7 @@
 export const CONFIG_PRODUTOS = {
   /* Tipo de origem */
   // Se '' ignora essa origem de dados (não sincroniza).
-  tipo: 'fb', // 'fb', 'db' | 'csv' | ''
+  tipo: 'db', // 'fb', 'db' | 'csv' | ''
 
   // Nome da view do cadastro de produtos
   nomeView: 'view_conecdata_produtos', // db/fb
@@ -22,6 +22,7 @@ export const CONFIG_PRODUTOS = {
     pro_fk_grupo AS id_departamento,
     gru_c_grupo AS nome_departamento,
     gru_b_ativo AS ativo_departamento,
+    1 AS online_departamento,
     
     0 AS id_subdepartamento,
     '' AS nome_subdepartamento,
@@ -44,7 +45,9 @@ export const CONFIG_PRODUTOS = {
     0 AS pesavel_fracao,
     '' AS pesavel_tipo,
     
-    1 AS produto_ativo,
+    1 AS ativo_produto,
+    
+    1 AS online_produto,
    
     '' AS descricao_produto,
 
@@ -93,7 +96,9 @@ export const CONFIG_PRODUTOS = {
     pro_f_pesavel_fracao AS pesavel_fracao,
     pro_c_pesavel_tipo AS pesavel_tipo,
     
-    pro_b_ativo AS produto_ativo,
+    pro_b_ativo AS ativo_produto,
+   
+    pro_b_online AS online,
    
     pro_c_descricao AS descricao_produto,
 
@@ -143,7 +148,7 @@ CREATE VIEW view_conecdata_produtos
     pesavel_fracao,
     pesavel_tipo,
 
-    produto_ativo,
+    ativo_produto,
 
     descricao_produto,
 

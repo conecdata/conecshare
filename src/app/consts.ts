@@ -8,6 +8,7 @@ export const PRODUTOS_REQ_FIELDS: string[] = [
   'atacado_qtde', // INTEGER
   'atacado_valor', // INTEGER/FLOAT
   'ativo_departamento', // BOOLEAN
+  'ativo_produto', // BOOLEAN
   'ativo_subdepartamento', // BOOLEAN
   'barcode_produto', // STRING
   'descricao_produto', // STRING
@@ -21,7 +22,8 @@ export const PRODUTOS_REQ_FIELDS: string[] = [
   'pesavel_status', // BOOLEAN
   'pesavel_tipo', // STRING
   'preco_venda', // FLOAT
-  'produto_ativo', // BOOLEAN
+  'online_departamento', // BOOLEAN
+  'online_produto', // BOOLEAN
   'qtde_estoque_atual', // INTEGER/FLOAT
   'qtde_estoque_minimo', // INTEGER/FLOAT
   'qtde_limite_venda', // INTEGER/FLOAT
@@ -146,9 +148,9 @@ export const CAMPOS_PRODUTOS: any = {
     type: DataTypes.DECIMAL,
     field: 'preco_venda'
   },
-  produto_ativo: {
+  ativo_produto: {
     type: DataTypes.BOOLEAN,
-    field: 'produto_ativo'
+    field: 'ativo_produto'
   },
   atacado_qtde: {
     type: DataTypes.INTEGER,
@@ -209,5 +211,13 @@ export const CAMPOS_PRODUTOS: any = {
   qtde_limite_venda: {
     type: DataTypes.DECIMAL,
     field: 'qtde_limite_venda'
+  },
+  online_produto: {
+    type: DataTypes.BOOLEAN,
+    field: 'online_produto'
+  },
+  online_departamento: {
+    type: DataTypes.BOOLEAN,
+    field: 'online_departamento'
   },
 };
