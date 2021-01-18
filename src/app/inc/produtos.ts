@@ -193,7 +193,8 @@ export function buscaDepartamentosSubdepartamentos(produtos: any[]): {
     RETORNO.departamentos.push({
       _id: `${get(produtos[i], 'id_departamento') || ''}`,
       ativo: chkBool(get(produtos[i], 'ativo_departamento')),
-      nome: get(produtos[i], 'nome_departamento') || ''
+      nome: get(produtos[i], 'nome_departamento') || '',
+      online: get(produtos[i], 'online_departamento') || ''
     });
 
     // Gera lista de subdepartamentos dos produtos.
