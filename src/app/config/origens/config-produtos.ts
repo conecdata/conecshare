@@ -195,25 +195,4 @@ LEFT JOIN
 LEFT JOIN
   subgrupos AS subdepartamentos ON produtos.pro_fk_subgrupo = subdepartamentos.sub_pk
 ;
-
-CREATE VIEW view_conecdata_produtos(
-    ID,
-    CATEGORY_ID,
-    TITLE,
-    ACTOR,
-    PRICE,
-    SPECIAL,
-    STOCK)
-AS
-select
-    id,
-    category_id,
-    title,
-    actor,
-    price,
-    special,
-    (select sum(inventory.quan_in_stock) from inventory where inventory.product_id=product.id)
-from product
-;
-
 */ 
