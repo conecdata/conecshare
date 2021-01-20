@@ -2,10 +2,10 @@ export const CONFIG = {
   db: {
     conexao: {
       host: '127.0.0.1',
-      tabela: 'conecsync',
+      tabela: 'hypico',
       usuario: 'root',
-      senha: 'senhasecreta',
-      tipo: 'postgres', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+      senha: 'masterkey',
+      tipo: 'mysql', /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
     }
   },
   fb: { // Firebird
